@@ -1,7 +1,7 @@
 {
   "name": "vite",
   "version": "0.0.0",
-  "homepage": "https://flyingliu.github.io/vite",
+  "homepage": "http://vite.bairilianzi.com/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
