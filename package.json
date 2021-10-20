@@ -1,17 +1,20 @@
 {
   "name": "vite",
   "version": "0.0.0",
+  "homepage": "https://flyingliu.github.io/vite",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.6"
+    "vue": "^3.2.6",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/compiler-sfc": "^3.2.6",
+    "sass": "^1.43.2",
     "vite": "^2.5.4"
   }
 }
