@@ -1,1 +1,0 @@
-import{_ as e}from"./index.67dd295f.js";import{o as r,e as o}from"./vendor.d8bb4279.js";const n={};function s(t,c){return r(),o("div",null," this.is home ")}var i=e(n,[["render",s]]);export{i as default};
