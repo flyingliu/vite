@@ -1,6 +1,6 @@
 <template>
   <div>
-    this.is home
+    this.is home！
   </div>
 
 </template>
