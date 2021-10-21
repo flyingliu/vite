@@ -202,25 +202,22 @@ loadFonts(family.familylist[0])
   display: inline-block;
 }
 
-
-dl,
-dd,
-ul,
-li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.dl {
+  padding: 10px;
 }
+
 .page {
   width: 210mm;
-  height: 295mm;
+  height: 297mm;
   page-break-after: always;
-  border-bottom: 1px solid #000;
   text-align: center;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
 }
 
 .mheader {
   max-width: 18.4cm;
+  padding: 0.5cm 0;
   margin: auto;
 }
 .mfooter {
@@ -243,17 +240,31 @@ li {
 
 .layout {
   display: flex;
+
 }
 .main {
-  width: 21cm;
+  width: 22cm;
+  height: 100vh;
+  overflow-y: auto;
 }
 .aside {
   background: #eee;
-  min-width: 250px;
-  width: calc(100vw - 21cm);
-  position: fixed;
-  left: 21cm;
-  top: 0;
+  width: calc(100% - 22cm);
   height: 100vh;
+}
+@media print {
+  .dl {
+    padding: 0;
+  }
+
+  .page {
+    border-bottom: 0px solid #000;
+    // box-shadow: unset;
+    box-shadow: unset;
+    page-break-after: always;
+  }
+  .aside {
+    display: none;
+  }
 }
 </style>

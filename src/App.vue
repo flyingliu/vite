@@ -45,8 +45,32 @@
   </div> -->
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style>
+#app {
+  min-width: 1200px;
+}
+/* unset */
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+dl,
+dd,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 </style>
