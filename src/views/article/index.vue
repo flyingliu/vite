@@ -12,39 +12,67 @@
             </li>
           </ul>
           <footer class="mfooter">
-            <sub>{{ new Date() }}</sub>
+            <ul>
+              <li>{{col}} * {{row}} = {{ col * row}} | {{(styleObj.itemWidth * 10).toFixed(1)}} MM * {{(styleObj.itemWidth * 10).toFixed(1)}} MM</li>
+              <li>字体：{{family.curr.label}}</li>
+              
+            </ul>
+            
           </footer>
         </dd>
       </dl>
     </main>
     <aside class="aside">
-      <h5 class="subtitle"><span class="uline">打印设置</span></h5>
-      <ul class="sidelist">
-        <li>
-          <label class="label">内容设置：</label>
-          <div class="licon">
-            <f-input v-model:value="mycon" @change="changeCon"></f-input>
+      <el-form
+        ref="form"
+        :model="data"
+        label-position="top"
+        label-width="120px"
+      >
+        <h5 class="subtitle"><span class="uline">打印设置</span></h5>
+        <el-form-item label="内容设置：">
+          <el-input
+            type="textarea"
+            v-model="mycon"
+            :autosize="{ minRows: 4, maxRows: 6 }"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="字体设置">
+          <div class="cc">
+            <el-select
+              placeholder="please select your zone"
+              @change="selectData"
+              v-model="styleObj.fontFamily"
+              size="small"
+            >
+              <el-option
+                v-for="item in family.familylist"
+                :value="item.value"
+                :label="item.label"
+              ></el-option>
+            </el-select>
+            <el-upload
+              class="upload-demo"
+              action="#"
+              :on-change="handleChange"
+              :http-request="() => {}"
+              :file-list="[]"
+              :show-file-list="false"
+            >
+              <el-button size="small" type="primary" plain
+                >加载本地字体</el-button
+              >
+            </el-upload>
           </div>
-        </li>
-        <li>
-          <label class="label">字体设置：</label>
-          <div class="licon">
-            <input type="file" accept="*" @change="upload" />
-            <select @change="selectData($event.target.value)">
-              <option disabled value="">Please select one</option>
-              <option v-for="item in family.familylist" :value="item.value">{{
-                item.label
-              }}</option>
-            </select>
-          </div>
-        </li>
-        <li>
-          <label class="label">列数设置：</label>
-          <div class="licon">
-            <input type="number" v-model="col" />
-          </div>
-        </li>
-      </ul>
+        </el-form-item>
+
+        <el-form-item label="列数设置：">
+          <el-slider v-model="col" :max="25" :min="3"></el-slider>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="print" size="small">打印</el-button>
+        </el-form-item>
+      </el-form>
     </aside>
   </div>
 </template>
@@ -52,11 +80,11 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from '/@/components/HelloWorld.vue'
 import { getFontName, familyList } from '/@/assets/js/util'
 import fInput from '/@/components/f-input.vue'
 import fTd from '/@/components/f-td.vue'
 import { ref, reactive, computed } from 'vue'
+
 const content = `10月10日，陕西咸阳彬州、宝鸡多地。迎来2021年下半年第一场雪。
 陕。西今年的雪下得比往年都要早一些，差不多一两个月，而且气温很低，不少人已经提前穿上棉袄。
 受降雪影响，太白山、红河谷景区自9日起临时性闭园，开放时间另行通知。
@@ -64,12 +92,17 @@ const content = `10月10日，陕西咸阳彬州、宝鸡多地。迎来2021年�
 此前在9月28日，黑龙江大兴安岭、呼中镇等多地都飘下了今年第一场雪。`
 
 const changeCon = () => {
-  console.log('v', con.value)
+  console.log('v')
 }
 
-const upload = (e) => {
-  const url = window.URL.createObjectURL(e.target.files[0])
-  const label = getFontName(e.target.files[0].name)
+const print = () => {
+  window.print()
+}
+
+const handleChange = (file) => {
+  console.log('+++', file)
+  const url = window.URL.createObjectURL(file.raw)
+  const label = getFontName(file.name)
   const list = family.familylist
   if (list.find((v) => v.label != label)) {
     list.push({ value: url, label })
@@ -105,6 +138,7 @@ function loadFonts(obj = {}) {
     .then((res) => {
       fonts.add(font)
       styleObj.fontFamily = obj.label
+      console.log('obj++', obj)
       family.curr = obj
     })
     .catch((err) => {
@@ -158,7 +192,6 @@ const GAP = 0.2
 const row = ref(4)
 
 const col = ref(11)
-
 const abc = computed(() => {
   const itemWidth = PAGEWIDTH / col.value
   styleObj.gridTemplateColumns =
@@ -167,6 +200,7 @@ const abc = computed(() => {
   styleObj.gridTemplateRows =
     'repeat(' + row.value + ', ' + itemWidth * 2 + 'cm)'
   styleObj.font = itemWidth * 0.618 + 'cm/' + itemWidth + 'cm arial'
+  styleObj.itemWidth = itemWidth
   return getPage(mycon.value, col.value, row.value)
 })
 
@@ -174,27 +208,63 @@ const styleObj = reactive({
   gridTemplateColumns: 'repeat(5, 20%)',
   gridTemplateRows: 'repeat(4, 25%)',
   font: '',
+  itemWidth: ''
 })
 
 loadFonts(family.familylist[0])
+
+const data = reactive({
+  name: mycon.value,
+  region: '122',
+  date1: '',
+  date2: '',
+  delivery: false,
+  type: [],
+  resource: '',
+  desc: 'dd',
+})
 </script>
 
 <style lang="scss">
+$c: #395260;
+.cc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.el-form--label-top {
+  .el-form-item__label {
+    position: relative;
+    padding: 0 0 0px 0;
+    font-weight: bold;
+    &::after {
+      width: 4em;
+      height: 0px;
+      position: absolute;
+      content: '';
+      background: $c;
+      left: 0;
+      bottom: 10px;
+    }
+  }
+}
+
 .subtitle {
   font: 18px/1.6 arial;
-}
-.uline {
-  content: '';
-  display: inline-block;
-  border-bottom: 3px solid #333;
+  padding-bottom: 20px;
+  .uline {
+    content: '';
+    display: inline-block;
+    border-bottom: 3px solid #333;
+  }
 }
 
 .sidelist {
   text-align: left;
-}
-
-.sidelist li {
-  padding: 0px 20px 20px;
+  li {
+    padding: 0px 20px 20px;
+  }
 }
 
 .label {
@@ -204,25 +274,35 @@ loadFonts(family.familylist[0])
 
 .dl {
   padding: 10px;
-}
-
-.page {
-  width: 210mm;
-  height: 297mm;
-  page-break-after: always;
-  text-align: center;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
-  margin-bottom: 10px;
-}
-
-.mheader {
-  max-width: 18.4cm;
-  padding: 0.5cm 0;
   margin: auto;
-}
-.mfooter {
-  max-width: 18.4cm;
-  margin: auto;
+  .page {
+    width: 21cm;
+    height: 297mm;
+    page-break-after: always;
+    text-align: center;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+    margin: 10px auto 30px;
+
+    .mheader {
+      max-width: 18.4cm;
+      padding: 0.5cm 0;
+      margin: auto;
+      height: 1.5cm;
+      box-sizing: border-box;
+      h1 { display: none;}
+    }
+    .mfooter {
+      max-width: 18.4cm;
+      margin: auto;
+      padding: 10px 0 0 0;
+      ul {
+        display: flex;
+        font-size: 12px;
+        gap: 10px;
+        justify-content: space-between;
+      }
+    }
+  }
 }
 
 .con {
@@ -233,36 +313,50 @@ loadFonts(family.familylist[0])
   display: inline-grid;
   padding: 10px;
   grid-gap: 0.2cm 0;
-}
-.con li {
-  display: block;
+  li {
+    display: block;
+  }
 }
 
 .layout {
   display: flex;
+  .main {
+    width: 22cm;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .aside {
+    background: #eee;
+    width: calc(100% - 22cm);
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+}
 
-}
-.main {
-  width: 22cm;
-  height: 100vh;
-  overflow-y: auto;
-}
-.aside {
-  background: #eee;
-  width: calc(100% - 22cm);
-  height: 100vh;
-}
 @media print {
+  .layout {
+    display: flex;
+    .main {
+      width: 100%;
+      text-align: center;
+      height: unset;
+    }
+    .aside {
+      display: none;
+    }
+  }
   .dl {
     padding: 0;
+    margin: auto;
+    .page {
+      border-bottom: 0px solid #000;
+      box-shadow: unset;
+      page-break-after: always;
+      margin: 0;
+    }
   }
 
-  .page {
-    border-bottom: 0px solid #000;
-    // box-shadow: unset;
-    box-shadow: unset;
-    page-break-after: always;
-  }
   .aside {
     display: none;
   }
