@@ -1,0 +1,1 @@
+import{f as n,r as a,o as s,g as r,h as u,i as p}from"./vendor.0dfea189.js";const d=p(" this.is home\uFF01 "),_={setup(c){const e=n(10);return(i,o)=>{const t=a("el-input");return s(),r("div",null,[d,u(t,{modelValue:e.value,"onUpdate:modelValue":o[0]||(o[0]=l=>e.value=l),placeholder:"Please input"},null,8,["modelValue"])])}}};export{_ as default};
