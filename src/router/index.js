@@ -10,6 +10,16 @@ const routes = [
     path: '/art',
     name: 'art',
     component: () => import('../views/article/index.vue')
+  },
+  {
+    path: '/classic',
+    name: 'classic',
+    component: () => import('../views/classic/index.vue')
+  },
+  {
+    path: '/good',
+    name: 'good',
+    component: () => import('../views/good/index.vue')
   }
 ]
 

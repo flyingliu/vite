@@ -24,7 +24,147 @@
   ),
 );
 
+
+
 $--font-path: 'element-plus/lib/theme-chalk/fonts';
 
 @import 'element-plus/theme-chalk/src/index.scss';
+
+$c: #395260;
+.cc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.el-form--label-top {
+  .el-form-item__label {
+    position: relative;
+    padding: 0 0 0px 0;
+    font-weight: bold;
+    &::after {
+      width: 4em;
+      height: 0px;
+      position: absolute;
+      content: '';
+      background: $c;
+      left: 0;
+      bottom: 10px;
+    }
+  }
+}
+
+.subtitle {
+  font: 18px/1.6 arial;
+  padding-bottom: 20px;
+  .uline {
+    content: '';
+    display: inline-block;
+    border-bottom: 3px solid #333;
+  }
+}
+
+.sidelist {
+  text-align: left;
+  li {
+    padding: 0px 20px 20px;
+  }
+}
+
+.label {
+  padding: 0 0 10px 0;
+  display: inline-block;
+}
+
+.dl {
+  padding: 10px;
+  margin: auto;
+  .page {
+    width: 21cm;
+    height: 297mm;
+    page-break-after: always;
+    text-align: center;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+    margin: 10px auto 30px;
+
+    .mheader {
+      max-width: 18.4cm;
+      padding: 0.5cm 0;
+      margin: auto;
+      height: 1.5cm;
+      box-sizing: border-box;
+      h1 { display: none;}
+    }
+    .mfooter {
+      max-width: 18.4cm;
+      margin: auto;
+      padding: 10px 0 0 0;
+      ul {
+        display: flex;
+        font-size: 12px;
+        gap: 10px;
+        justify-content: space-between;
+        &.center {
+          justify-content: center ;
+        }
+      }
+    }
+  }
+}
+
+.con {
+  margin: auto;
+  border: 3px solid #000;
+  overflow: hidden;
+  position: relative;
+  display: inline-grid;
+  padding: 10px;
+  grid-gap: 0.2cm 0;
+  li {
+    display: block;
+  }
+}
+
+.layout {
+  display: flex;
+  .main {
+    width: 22cm;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .aside {
+    background: #eee;
+    width: calc(100% - 22cm);
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+}
+
+@media print {
+  .layout {
+    display: flex;
+    .main {
+      width: 100%;
+      text-align: center;
+      height: unset;
+    }
+    .aside {
+      display: none;
+    }
+  }
+  .dl {
+    padding: 0;
+    margin: auto;
+    .page {
+      border-bottom: 0px solid #000;
+      box-shadow: unset;
+      page-break-after: always;
+      margin: 0;
+    }
+  }
+  .aside {
+    display: none;
+  }
+}
 

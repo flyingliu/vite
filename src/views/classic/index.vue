@@ -3,23 +3,19 @@
     <main class="main">
       <dl class="dl">
         <dd class="page" v-for="(page, index) in abc" :key="index">
-          <header class="mheader">
-            <h1>书法练习</h1>
-          </header>
+
           <ul class="con" :style="styleObj">
             <li v-for="(t, index) in page" :key="index">
-              <f-td :text="t"></f-td>
+              <span>{{t}}</span>
             </li>
           </ul>
           <footer class="mfooter">
             <ul>
-              <li>
-                {{ col }} * {{ row }} = {{ col * row }} |
-                {{ (styleObj.itemWidth * 10).toFixed(1) }} MM *
-                {{ (styleObj.itemWidth * 10).toFixed(1) }} MM
-              </li>
-              <li>字体：{{ family.curr.label }}</li>
+              <li>{{col}} * {{row}} = {{ col * row}} | {{(styleObj.itemWidth * 10).toFixed(1)}} MM * {{(styleObj.itemWidth * 10).toFixed(1)}} MM</li>
+              <li>字体：{{family.curr.label}}</li>
+              
             </ul>
+            
           </footer>
         </dd>
       </dl>
@@ -27,7 +23,6 @@
     <aside class="aside">
       <el-form
         ref="form"
-        :model="data"
         label-position="top"
         label-width="120px"
       >
@@ -72,7 +67,7 @@
           <el-slider v-model="col" :max="25" :min="3"></el-slider>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="print" size="small">打印</el-button>
+          <el-button type="primary" size="small">打印</el-button>
         </el-form-item>
       </el-form>
     </aside>
@@ -80,11 +75,7 @@
 </template>
 
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { getFontName, familyList } from '/@/assets/js/util'
-import fInput from '/@/components/f-input.vue'
-import fTd from '/@/components/f-td.vue'
 import { ref, reactive, computed } from 'vue'
 
 const content = `  庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。
@@ -94,13 +85,7 @@ const content = `  庆历四年春，滕子京谪守巴陵郡。越明年，政�
 嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲，居庙堂之高则忧其民，处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎！噫！微斯人，吾谁与归？
 时六年九月十五日。`
 
-const changeCon = () => {
-  console.log('v')
-}
 
-const print = () => {
-  window.print()
-}
 
 const handleChange = (file) => {
   console.log('+++', file)
@@ -127,12 +112,12 @@ const family = reactive({
 
 const selectData = (v) => {
   family.curr = family.familylist.find((item) => item.value === v) || {}
-  console.log(v, family.curr)
   loadFonts(family.curr)
 }
 
+const fonts = document.fonts
+
 function loadFonts(obj = {}) {
-  const fonts = document.fonts
   const font = new FontFace(obj.label, 'url(' + obj.value + ')')
   font
     .load()
@@ -208,21 +193,15 @@ const styleObj = reactive({
   gridTemplateColumns: 'repeat(5, 20%)',
   gridTemplateRows: 'repeat(4, 25%)',
   font: '',
-  itemWidth: '',
+  itemWidth: ''
 })
 
 loadFonts(family.familylist[0])
 
-const data = reactive({
-  name: mycon.value,
-  region: '122',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: 'dd',
-})
+
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+$c: #395260;
+
+</style>
