@@ -1,0 +1,1 @@
+const f=t=>t.split("/").reverse()[0].split(".")[0],s=["/fonts/\u5362\u4E2D\u5357.woff","/fonts/\u8D56\u5174\u624D.woff","/fonts/\u5F90\u51B0.woff","/fonts/\u6BDB\u6CFD\u4E1C\u8349\u4E66.ttf"];export{s as f,f as g};
