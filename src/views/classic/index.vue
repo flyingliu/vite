@@ -2,206 +2,86 @@
   <div class="layout">
     <main class="main">
       <dl class="dl">
-        <dd class="page" v-for="(page, index) in abc" :key="index">
-
-          <ul class="con" :style="styleObj">
-            <li v-for="(t, index) in page" :key="index">
-              <span>{{t}}</span>
-            </li>
-          </ul>
+        <dd class="page" v-for="(page, n) in state.content" :key="n">
+          <header class="mheader">
+            <h1>书法练习</h1>
+          </header>
+          <div class="con">
+            <dd class="one" :style="state.styleObj">
+              <ul v-for="(str, i) in page" :key="i">
+                <li class="item" v-for="k in state.col" :key="k" :style="state.item">
+                  <div>{{ str }}</div></li>
+              </ul>
+            </dd>
+          </div>
           <footer class="mfooter">
-            <ul>
-              <li>{{col}} * {{row}} = {{ col * row}} | {{(styleObj.itemWidth * 10).toFixed(1)}} MM * {{(styleObj.itemWidth * 10).toFixed(1)}} MM</li>
-              <li>字体：{{family.curr.label}}</li>
-              
+            <ul class="center">
+              <li>
+                {{ state.col }} * {{ state.row }} =
+                {{ state.col * state.row }} |
+                {{ (state.size * 10).toFixed(1) }} MM *
+                {{ (state.size * 10).toFixed(1) }} MM
+              </li>
+              <li>字体：{{ state.font }}</li>
             </ul>
-            
           </footer>
         </dd>
       </dl>
     </main>
     <aside class="aside">
-      <el-form
-        ref="form"
-        label-position="top"
-        label-width="120px"
-      >
-        <h5 class="subtitle"><span class="uline">打印设置</span></h5>
-        <el-form-item label="内容设置：">
-          <el-input
-            type="textarea"
-            v-model="mycon"
-            :autosize="{ minRows: 4, maxRows: 6 }"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="字体设置">
-          <div class="cc">
-            <el-select
-              placeholder="please select your zone"
-              @change="selectData"
-              v-model="styleObj.fontFamily"
-              size="small"
-            >
-              <el-option
-                v-for="item in family.familylist"
-                :value="item.value"
-                :label="item.label"
-              ></el-option>
-            </el-select>
-            <el-upload
-              class="upload-demo"
-              action="#"
-              :on-change="handleChange"
-              :http-request="() => {}"
-              :file-list="[]"
-              :show-file-list="false"
-            >
-              <el-button size="small" type="primary" plain
-                >加载本地字体</el-button
-              >
-            </el-upload>
-          </div>
-        </el-form-item>
-
-        <el-form-item label="列数设置：">
-          <el-slider v-model="col" :max="25" :min="3"></el-slider>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="small">打印</el-button>
-        </el-form-item>
-      </el-form>
+      <set-grid @getGrid="getGrid" />
     </aside>
   </div>
 </template>
-
 <script setup>
-import { getFontName, familyList } from '/@/assets/js/util'
-import { ref, reactive, computed } from 'vue'
-
-const content = `  庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。
-予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯，朝晖夕阴，气象万千，此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？
-若夫淫雨霏霏，连月不开，阴风怒号，浊浪排空，日星隐曜，山岳潜形，商旅不行，樯倾楫摧，薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。
-至若春和景明，波澜不惊，上下天光，一碧万顷，沙鸥翔集，锦鳞游泳，岸芷汀兰，郁郁青青。而或长烟一空，皓月千里，浮光跃金，静影沉璧，渔歌互答，此乐何极！登斯楼也，则有心旷神怡，宠辱偕忘，把酒临风，其喜洋洋者矣。
-嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲，居庙堂之高则忧其民，处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎！噫！微斯人，吾谁与归？
-时六年九月十五日。`
-
-
-
-const handleChange = (file) => {
-  console.log('+++', file)
-  const url = window.URL.createObjectURL(file.raw)
-  const label = getFontName(file.name)
-  const list = family.familylist
-  if (list.find((v) => v.label != label)) {
-    list.push({ value: url, label })
-  }
-  loadFonts(list.find((v) => v.label == label))
+import { ref, reactive, toRefs, computed } from 'vue'
+import SetGrid from './SetGrid.vue'
+let state = ref({})
+const getGrid = (data) => {
+  state.value = data
 }
-
-const family = reactive({
-  familylist: familyList.map((item) => {
-    return typeof item === 'string'
-      ? {
-          label: getFontName(item),
-          value: item,
-        }
-      : item
-  }),
-  curr: {},
-})
-
-const selectData = (v) => {
-  family.curr = family.familylist.find((item) => item.value === v) || {}
-  loadFonts(family.curr)
-}
-
-const fonts = document.fonts
-
-function loadFonts(obj = {}) {
-  const font = new FontFace(obj.label, 'url(' + obj.value + ')')
-  font
-    .load()
-    .then((res) => {
-      fonts.add(font)
-      styleObj.fontFamily = obj.label
-      family.curr = obj
-    })
-    .catch((err) => {
-      alert('字体加载错误！')
-      console.error(err)
-    })
-}
-
-const formatStr = (val, col) => {
-  const Arr = ['。', '，', '”', '》', '！', '？', ',', '.', '?', '!']
-  const str = []
-  console.log('===col', col)
-  val.split('').map((v, i) => {
-    if (Arr.includes(v) && !(str.length % col) && val.length > col) {
-      str[str.length - 1] = str[str.length - 1] + v
-    } else {
-      str.push(v)
-    }
-  })
-  return str
-}
-
-// 字符串分页处理，每个字符串编号
-
-const pageArr = (arr, col = 5, row = 5) => {
-  const pageAll = [[]]
-  arr.forEach((item, index) => {
-    const pageIndex = Math.floor(index / (row * col))
-    pageAll[pageIndex]
-      ? pageAll[pageIndex].push(item)
-      : (pageAll[pageIndex] = [item])
-  })
-  pageAll[pageAll.length - 1].length = row * col
-  return pageAll
-}
-
-// 单元格处理
-
-const my = computed(() => (v = '') => v.split(''))
-
-const getPage = (val, col, row) => {
-  const newval = formatStr(val, col)
-  return pageArr(newval, col, row)
-}
-const mycon = ref(content)
-
-const PAGEWIDTH = 18
-const PAGEHEIGHT = 26
-const GAP = 0.2
-
-const row = ref(4)
-
-const col = ref(11)
-const abc = computed(() => {
-  const itemWidth = PAGEWIDTH / col.value
-  styleObj.gridTemplateColumns =
-    'repeat(' + col.value + ', ' + itemWidth + 'cm)'
-  row.value = Math.floor(PAGEHEIGHT / (itemWidth * 2 + GAP))
-  styleObj.gridTemplateRows =
-    'repeat(' + row.value + ', ' + itemWidth * 2 + 'cm)'
-  styleObj.font = itemWidth * 0.618 + 'cm/' + itemWidth + 'cm arial'
-  styleObj.itemWidth = itemWidth
-  return getPage(mycon.value, col.value, row.value)
-})
-
-const styleObj = reactive({
-  gridTemplateColumns: 'repeat(5, 20%)',
-  gridTemplateRows: 'repeat(4, 25%)',
-  font: '',
-  itemWidth: ''
-})
-
-loadFonts(family.familylist[0])
-
-
 </script>
-
 <style lang="scss">
 $c: #395260;
+$line: #999;
+.one {
+  padding: 0px;
+  ul {
+    display: flex;
+    flex: row nowrap;
+  }
+}
 
+.item {
+  border:.5px solid #333;
+  box-sizing: border-box;
+  position: relative;
+  margin: auto;
+  >div {position: relative; z-index: 9;}
+  &::before,&::after {
+    content:'';
+    display: block;
+        position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(45deg);
+    background-image: 
+      linear-gradient(to bottom, transparent 50%, $line 50%), // 上面的会覆盖下面的。
+      linear-gradient(to right, transparent 50%, $line 50%); // 上面的会覆盖下面的。
+    background-repeat: repeat-y,repeat-x; // 可以单独定义重复类型
+    background-size: 2px 5%,5% 2px; // 可以单独定义大小
+    background-position: center;
+  }
+  &::after {
+    transform:unset;
+  }
+}
+.one span {
+  border: 0.5px solid #333;
+}
+.one span.last {
+  border: 1px solid #333;
+}
 </style>
