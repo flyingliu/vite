@@ -24,8 +24,6 @@
   ),
 );
 
-
-
 $--font-path: 'element-plus/lib/theme-chalk/fonts';
 
 @import 'element-plus/theme-chalk/src/index.scss';
@@ -55,8 +53,8 @@ $c: #395260;
 }
 
 .subtitle {
-  font: 18px/1.6 arial;
-  padding-bottom: 20px;
+  font: 14px/1.6 arial;
+  padding-bottom: 10px;
   .uline {
     content: '';
     display: inline-block;
@@ -93,7 +91,9 @@ $c: #395260;
       margin: auto;
       height: 1.5cm;
       box-sizing: border-box;
-      h1 { display: none;}
+      h1 {
+        display: none;
+      }
     }
     .mfooter {
       max-width: 18.4cm;
@@ -105,7 +105,7 @@ $c: #395260;
         gap: 10px;
         justify-content: space-between;
         &.center {
-          justify-content: center ;
+          justify-content: center;
         }
       }
     }
@@ -138,6 +138,14 @@ $c: #395260;
     height: 100vh;
     padding: 20px;
     box-sizing: border-box;
+    overflow: auto;
+    .el-form-item {
+      margin-bottom: 10px;
+    }
+    .el-slider__marks-text {
+      margin-top: 3px;
+      font-size: 12px;
+    }
   }
 }
 
@@ -167,4 +175,3 @@ $c: #395260;
     display: none;
   }
 }
-

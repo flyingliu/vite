@@ -53,6 +53,25 @@
     <el-form-item label="行数：">
       <el-slider v-model="state.row" :max="25" :min="3"></el-slider>
     </el-form-item>
+    <el-form-item label="其他设置：">
+      <div class="oset">
+        <el-color-picker v-model="state.color" size="small"></el-color-picker>
+        <el-select
+          v-model="state.class"
+          clearable
+          placeholder="请选择"
+          size="small"
+        >
+          <el-option
+            v-for="item in [{ label: 'ss', value: 'aa' }]"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="print" size="small">打印</el-button>
     </el-form-item>
@@ -147,6 +166,8 @@ const state = reactive({
   col: 4,
   size: 1.6,
   font: '',
+  color: '#333333',
+  class: '',
   styleObj,
   lastItem,
 })
@@ -165,4 +186,11 @@ const init = () => {
 init()
 </script>
 
-<style class="scss"></style>
+<style class="scss">
+.oset {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+</style>

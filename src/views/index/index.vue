@@ -2,7 +2,7 @@
   <div class="index">
     <div class="mleft">
       <h3 class="logo iconfont">&#xe611;&#xe607;&#xe608;&#xe610;</h3>
-      <p>百日练字<sup>beta</sup></p>
+      <p>百日练字 <sup>beta</sup></p>
     </div>
 
     <dl class="mdl">
@@ -61,6 +61,7 @@ const input = ref(10)
 <style lang="scss" scoped>
 $c: #395260;
 $red: #900;
+sup { font-weight: normal;}
 .index {
   padding: 40px;
   display: flex;
@@ -71,6 +72,7 @@ $red: #900;
 .logo {
   font-size: 40px;
   color: $red;
+  font-weight: normal;
 }
 a {
   color: $c;

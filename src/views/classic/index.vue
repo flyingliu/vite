@@ -22,7 +22,6 @@
                 {{ (state.size * 10).toFixed(1) }} MM *
                 {{ (state.size * 10).toFixed(1) }} MM
               </li>
-              <li>字体：{{ state.font }}</li>
             </ul>
           </footer>
         </dd>

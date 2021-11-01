@@ -18,7 +18,6 @@
                 {{ (styleObj.itemWidth * 10).toFixed(1) }} MM *
                 {{ (styleObj.itemWidth * 10).toFixed(1) }} MM
               </li>
-              <li>字体：{{ family.curr.label }}</li>
             </ul>
           </footer>
         </dd>
