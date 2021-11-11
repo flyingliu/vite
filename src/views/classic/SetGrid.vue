@@ -60,9 +60,12 @@
 import { getFontName, familyList } from '/@/assets/js/util'
 
 import { reactive, toRefs, ref, computed } from 'vue'
+
+
 const PAGEWIDTH = 18
 const PAGEHEIGHT = 26
 const GAP = 0.2
+const SCALE = 0.72
 
 const family = reactive({
   familylist: familyList.map((item) => {
@@ -107,7 +110,7 @@ function loadFonts(obj = {}) {
 }
 
 const styleObj = computed(() => ({
-  font: state.size * 0.618 + 'cm/' + state.size + 'cm ' + state.font,
+  font: state.size * SCALE + 'cm/' + state.size + 'cm ' + state.font,
 }))
 
 const item = computed(() => ({

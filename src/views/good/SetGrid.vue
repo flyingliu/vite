@@ -83,13 +83,12 @@ import { getFontName, familyList } from '/@/assets/js/util'
 
 import { reactive, toRefs, ref, computed } from 'vue'
 
+const SCALE = 0.72
+
 const family = reactive({
   familylist: familyList.map((item) => {
     return typeof item === 'string'
-      ? {
-          label: getFontName(item),
-          value: item,
-        }
+      ? { label: getFontName(item), value: item }
       : item
   }),
 })
@@ -128,7 +127,7 @@ function loadFonts(obj = {}) {
 const styleObj = computed(() => ({
   gridTemplateColumns: 'repeat(' + (state.col + 1) + ', ' + state.size + 'cm)',
   gridTemplateRows: 'repeat(' + state.row + ', ' + state.size + 'cm)',
-  font: state.size * 0.618 + 'cm/' + state.size + 'cm ' + state.font,
+  font: state.size * SCALE + 'cm/' + state.size + 'cm ' + state.font,
 }))
 
 const lastItem = computed(() => ({
