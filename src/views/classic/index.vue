@@ -6,15 +6,31 @@
           <header class="mheader">
             <h1>书法练习</h1>
           </header>
-          <div class="con">
+          <div class="con" :style="{ borderColor: state.color }">
             <dd class="one" :style="state.styleObj">
-              <ul v-for="(str, i) in page" :key="i">
-                <li class="item" v-for="k in state.col" :key="k" :style="state.item">
-                  <div>{{ str }}</div></li>
+              <ul
+                v-for="(str, i) in page"
+                :key="i"
+                :style="{ color: state.color }"
+              >
+                <li
+                  class="item"
+                  v-for="(k, n) in state.col"
+                  :key="k"
+                  :style="state.item"
+                  :class="state.icon"
+                >
+                  <div
+                    v-if="n % state.repeat === 0"
+                    :style="{ color: state.colorFont }"
+                  >
+                    {{ str }}
+                  </div>
+                </li>
               </ul>
             </dd>
           </div>
-          <footer class="mfooter">
+          <footer class="mfooter" :style="{ color: state.color }">
             <ul class="center">
               <li>
                 {{ state.col }} * {{ state.row }} =
@@ -28,18 +44,20 @@
       </dl>
     </main>
     <aside class="aside">
-      <set-grid @getGrid="getGrid" />
+      <set-grid ref="SetGridRef" />
     </aside>
   </div>
 </template>
 <script setup>
-import { ref, reactive, toRefs, computed } from 'vue'
+import { ref, reactive, toRefs, computed, onMounted } from 'vue'
 import SetGrid from './SetGrid.vue'
-let state = ref({})
-const getGrid = (data) => {
-  state.value = data
-}
+const SetGridRef = ref(null)
+const state = ref({})
+onMounted(() => {
+  state.value = SetGridRef.value.state
+})
 </script>
+
 <style lang="scss">
 $c: #395260;
 $line: #999;
@@ -52,29 +70,35 @@ $line: #999;
 }
 
 .item {
-  border:.5px solid #333;
+  border-width: 0.5px;
+  border-style: solid;
   box-sizing: border-box;
   position: relative;
   margin: auto;
-  >div {position: relative; z-index: 9;}
-  &::before,&::after {
-    content:'';
+  > div {
+    position: relative;
+    z-index: 9;
+  }
+  &.icon1::before {
+    content: '\e600';
+  }
+  &.icon2::before {
+    content: '\e601';
+  }
+  &.icon3::before {
+    content: '\e602';
+  }
+  &::before {
+    font-family: 'iconfont';
+    font-size: 100%;
+    line-height: 1.35;
     display: block;
-        position: absolute;
-    top:0;
-    left:0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: auto;
     width: 100%;
     height: 100%;
-    transform: rotate(45deg);
-    background-image: 
-      linear-gradient(to bottom, transparent 50%, $line 50%), // 上面的会覆盖下面的。
-      linear-gradient(to right, transparent 50%, $line 50%); // 上面的会覆盖下面的。
-    background-repeat: repeat-y,repeat-x; // 可以单独定义重复类型
-    background-size: 2px 5%,5% 2px; // 可以单独定义大小
-    background-position: center;
-  }
-  &::after {
-    transform:unset;
   }
 }
 .one span {

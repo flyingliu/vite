@@ -23,6 +23,7 @@ jobs:
           npm install
           npm run build
       # 这里引用了别人写好的发布库，具体参数信息可以查阅上面的链接
+      # https://github.com/JamesIves/github-pages-deploy-action
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:

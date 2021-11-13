@@ -85,7 +85,8 @@ $c: #395260;
 
 .con {
   margin: auto;
-  border: 3px solid #000;
+  border-width: 3px;
+  border-style: solid;
   overflow: hidden;
   position: relative;
   display: inline-grid;

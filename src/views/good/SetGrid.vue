@@ -80,7 +80,6 @@
 
 <script setup>
 import { getFontName, familyList } from '/@/assets/js/util'
-
 import { reactive, toRefs, ref, computed } from 'vue'
 
 const SCALE = 0.72
