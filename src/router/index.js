@@ -15,6 +15,11 @@ const routes = [
     path: '/classic',
     name: 'classic',
     component: () => import('../views/classic/index.vue')
+  },  
+  {
+    path: '/jizhiwengao',
+    name: 'jizhiwengao',
+    component: () => import('../views/jizhiwengao/index.vue')
   },
   {
     path: '/good',
