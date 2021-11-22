@@ -12,7 +12,6 @@
           {{ v.label }}
         </li>
       </ul>
-
     </el-form-item>
 
     <el-form-item label="其他设置：">
@@ -24,7 +23,6 @@
           :predefine="predefineColors"
           size="small"
         ></el-color-picker>
-
 
         <el-input-number
           v-model="state.repeat"
@@ -80,11 +78,13 @@ const contentList = ref(
     .sort(sortBy('number', true))
 )
 
-imageSimilarityValue(contentList.value[0].httpImg, BOUNDING).then((res) => {
-
-  state.colors = res.colors
-  console.log(state.colors)
-})
+const setBg = (item) => {
+  item = item || contentList.value[0]
+  imageSimilarityValue(item.httpImg, BOUNDING).then((res) => {
+    state.colors = res.colors
+    console.log(state.colors)
+  })
+}
 
 const PAGEWIDTH = 18
 const PAGEHEIGHT = 26
@@ -92,30 +92,23 @@ const GAP = 0.2
 const SCALE = 0.75
 
 const mycon = ref(null)
-const selectContent = (v) => {
-  mycon.value = list[v]
-}
 
 const addText = (item) => {
   item.active = !item.active
+  setBg(item)
 }
 
-[0,1].forEach(i=>addText(contentList.value[i]))
-
-
+([0, 1]).forEach((i) => addText(contentList.value[i]))
 
 const item = computed(() => ({
   width: state.size + 'cm',
   height: state.size + 'cm',
   fontSize: state.size + 'cm',
-  color: state.color
+  color: state.color,
 }))
 
-
-
-
 const content = computed(() => {
-  return contentList.value.filter(v=>v.active)
+  return contentList.value.filter((v) => v.active)
 })
 
 const row = computed(() => Math.floor(PAGEHEIGHT / state.size))
@@ -135,8 +128,6 @@ const state = reactive({
 })
 
 const print = () => window.print()
-
-
 
 const predefineColors = ref([
   '#e00',
@@ -169,8 +160,6 @@ const iconList = [
 defineExpose({
   state,
 })
-
-
 </script>
 
 <style lang="scss" scoped>
