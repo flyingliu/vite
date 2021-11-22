@@ -1,40 +1,22 @@
 <template>
   <div class="layout">
     <main class="main">
-      <dl class="dl">
-        <dd class="page" v-for="(page, n) in state.content" :key="n">
-          <header class="mheader">
-            <h1>书法练习</h1>
-          </header>
-          <div class="con" :style="{ borderColor: state.color }">
-            <dd class="one" :style="state.styleObj">
-              <ul
-                v-for="(str, i) in page"
-                :key="i"
-                :style="{ color: state.color }"
-              >
-                <li
-                  class="item"
-                  v-for="(k, n) in state.col"
-                  :key="k"
-                  :style="state.item"
-                  :class="state.icon"
-                >
-                  <div
-                    v-if="n % state.repeat === 0"
-                    :style="{ color: state.colorFont }"
-                  >
-                    <img src="/data/jizhiwengao/217_知.jpg" />
-                  </div>
-                </li>
-              </ul>
+      <dl class="dlone">
+        <dd class="page" :style="{ backgroundColor: state.colors?.[0] || '' }">
+          <dl class="con" :style="{ borderColor: state.color }">
+            <dd
+              class="item"
+              v-for="(v, n) in state.content"
+              :key="n"
+              :class="state.icon"
+              :style="state.item"
+            >
+              <div><img :src="v.httpImg" :alt="v.label" /></div>
             </dd>
-          </div>
+          </dl>
           <footer class="mfooter" :style="{ color: state.color }">
             <ul class="center">
               <li>
-                {{ state.col }} * {{ state.row }} =
-                {{ state.col * state.row }} |
                 {{ (state.size * 10).toFixed(1) }} MM *
                 {{ (state.size * 10).toFixed(1) }} MM
               </li>
@@ -58,14 +40,26 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $c: #395260;
 $line: #999;
-.one {
-  padding: 0px;
-  ul {
+
+.dlone {
+  width: 100%;
+  height: 100vh;
+
+  .page {
+    width: 100%;
+    height: 100vh;
     display: flex;
-    flex: row nowrap;
+    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: center;
+    overflow: hidden;
+    .con {
+      display: flex;
+      flex-flow: row nowrap;
+    }
   }
 }
 
@@ -77,14 +71,16 @@ $line: #999;
   margin: auto;
   > div {
     position: relative;
-    z-index: 9;
+    z-index: 1;
     width: 100%;
     height: 100%;
+
     img {
       position: relative;
       width: 100%;
       height: 100%;
       object-fit: contain;
+      display: block;
     }
   }
   &.icon1::before {
@@ -97,9 +93,10 @@ $line: #999;
     content: '\e602';
   }
   &::before {
+    z-index: 9;
     font-family: 'iconfont';
     font-size: 100%;
-    line-height: 1.35;
+    line-height:1;
     display: block;
     position: absolute;
     top: 0;
@@ -108,11 +105,5 @@ $line: #999;
     width: 100%;
     height: 100%;
   }
-}
-.one span {
-  border: 0.5px solid #333;
-}
-.one span.last {
-  border: 1px solid #333;
 }
 </style>

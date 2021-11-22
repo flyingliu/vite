@@ -58,7 +58,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $c: #395260;
 $line: #999;
 .one {

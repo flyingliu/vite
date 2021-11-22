@@ -61,7 +61,7 @@
         ></el-color-picker>
 
         <el-color-picker
-          title="背景色"
+          title="字体颜色"
           v-model="state.colorFont"
           show-alpha
           :predefine="predefineColors"

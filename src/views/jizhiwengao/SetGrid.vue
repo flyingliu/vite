@@ -2,54 +2,19 @@
   <el-form ref="form" label-position="top" label-width="120px">
     <h5 class="subtitle"><span class="uline">打印设置</span></h5>
     <el-form-item label="内容设置：">
-      <el-input
-        type="textarea"
-        v-model="mycon"
-        :autosize="{ minRows: 4, maxRows: 6 }"
-      ></el-input>
-      <el-select
-        placeholder="please select your zone"
-        @change="selectContent"
-        v-model="currCon"
-        size="small"
-      >
-        <el-option
-          v-for="item in contentList"
-          :value="item.value"
-          :label="item.label"
-        ></el-option>
-      </el-select>
+      <ul class="contentList">
+        <li
+          v-for="v in contentList"
+          :key="v.number"
+          @click="addText(v)"
+          :class="{ active: v.active }"
+        >
+          {{ v.label }}
+        </li>
+      </ul>
+
     </el-form-item>
 
-    <el-form-item label="字体设置">
-      <div class="cc">
-        <el-select
-          placeholder="please select your zone"
-          @change="selectData"
-          v-model="state.font"
-          size="small"
-        >
-          <el-option
-            v-for="item in family.familylist"
-            :value="item.value"
-            :label="item.label"
-          ></el-option>
-        </el-select>
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="addLocalFont"
-          :http-request="() => {}"
-          :file-list="[]"
-          :show-file-list="false"
-        >
-          <el-button size="small" type="primary" plain>加载本地字体</el-button>
-        </el-upload>
-      </div>
-    </el-form-item>
-    <el-form-item label="列数：">
-      <el-slider v-model="state.col" :max="25" :min="2"></el-slider>
-    </el-form-item>
     <el-form-item label="其他设置：">
       <div class="oset">
         <el-color-picker
@@ -60,18 +25,11 @@
           size="small"
         ></el-color-picker>
 
-        <el-color-picker
-          title="背景色"
-          v-model="state.colorFont"
-          show-alpha
-          :predefine="predefineColors"
-          size="small"
-        ></el-color-picker>
 
         <el-input-number
           v-model="state.repeat"
           :min="1"
-          :max="state.col"
+          :max="6"
           size="small"
           style="width:100px;"
         />
@@ -100,134 +58,85 @@
 </template>
 
 <script setup>
-import { getFontName, familyList } from '/@/assets/js/util'
+import { getFontName, familyList, sortBy } from '/@/assets/js/util'
 
 import { reactive, toRefs, ref, computed } from 'vue'
 import list from '/@/assets/js/jizhiwengao'
-
+import { imageSimilarityValue } from '/@/assets/js/image-similarity'
 const BASE = '/data/jizhiwengao/'
-const contentList = list.map((v) => {
-  const item = v.split('.')[0].split('_')
-  return {
-    label: item[1],
-    value: v,
-    number: item[0],
-    httpImg: BASE + v
-  }
+const BOUNDING = [10, 10, 300, 100]
+const contentList = ref(
+  list
+    .map((v) => {
+      const item = v.split('.')[0].split('_')
+      return {
+        label: item[1],
+        value: v,
+        number: +item[0],
+        httpImg: BASE + v,
+        active: false,
+      }
+    })
+    .sort(sortBy('number', true))
+)
+
+imageSimilarityValue(contentList.value[0].httpImg, BOUNDING).then((res) => {
+
+  state.colors = res.colors
+  console.log(state.colors)
 })
-
-
 
 const PAGEWIDTH = 18
 const PAGEHEIGHT = 26
 const GAP = 0.2
 const SCALE = 0.75
 
-const family = reactive({
-  familylist: familyList.map((item) => {
-    return typeof item === 'string'
-      ? {
-          label: getFontName(item),
-          value: item,
-        }
-      : item
-  }),
-})
-
-const selectData = (v) => {
-  const curr = family.familylist.find((item) => item.value === v)
-  curr && loadFonts(curr)
-}
-
-const currCon = ref('大')
+const mycon = ref(null)
 const selectContent = (v) => {
   mycon.value = list[v]
 }
 
-const addLocalFont = (file) => {
-  const url = window.URL.createObjectURL(file.raw)
-  const label = getFontName(file.name)
-  const list = family.familylist
-  if (list.find((v) => v.label != label)) {
-    list.push({ value: url, label })
-  }
-  loadFonts(list.find((v) => v.label == label))
+const addText = (item) => {
+  item.active = !item.active
 }
 
-function loadFonts(obj = {}) {
-  const fonts = document.fonts
-  const font = new FontFace(obj.label, 'url(' + obj.value + ')')
-  font
-    .load()
-    .then((res) => {
-      fonts.add(font)
-      state.font = obj.label
-      return obj
-    })
-    .catch((err) => {
-      alert('字体加载错误！')
-      console.error(err)
-    })
-}
+[0,1].forEach(i=>addText(contentList.value[i]))
 
-const styleObj = computed(() => ({
-  font: state.size * SCALE + 'cm/' + state.size + 'cm ' + state.font,
-}))
+
 
 const item = computed(() => ({
   width: state.size + 'cm',
   height: state.size + 'cm',
+  fontSize: state.size + 'cm',
+  color: state.color
 }))
 
-const mycon = ref('大')
 
-const marks = {
-  1: '1CM',
-  1.4: '1.4',
-  2: '2CM',
-  3: '3CM',
-}
 
-function chunk(arr, size) {
-  return Array.from({
-    length: Math.ceil(arr.length / size),
-  }).map((item, index) => arr.slice(index * size, (index + 1) * size))
-}
 
 const content = computed(() => {
-  let len = state.row
-  let str = mycon.value
-  let arr = chunk(str, len)
-  return arr.filter(Boolean).map((item) => {
-    let itemArr = item.split('')
-    return itemArr.length >= len
-      ? itemArr.splice(0, len)
-      : [...itemArr, ...Array(len - itemArr.length).fill('')]
-  })
+  return contentList.value.filter(v=>v.active)
 })
 
 const row = computed(() => Math.floor(PAGEHEIGHT / state.size))
-const size = computed(() => PAGEWIDTH / state.col)
+const size = computed(() => PAGEWIDTH / state.repeat)
 
 const state = reactive({
-  col: 2,
+  col: 1,
   content,
   row,
   size,
   font: '',
-  styleObj,
   item,
-  color: '#e00',
-  colorFont: '#000',
-  repeat: 6,
+  color: 'rgba(0,0,0,.5)',
+  repeat: 2,
+  colors: [],
   icon: 'icon1',
 })
 
 const print = () => window.print()
 
-const init = () => {
-  loadFonts(family.familylist[0])
-}
+
 
 const predefineColors = ref([
   '#e00',
@@ -261,10 +170,28 @@ defineExpose({
   state,
 })
 
-init()
+
 </script>
 
-<style class="scss" scoped>
+<style lang="scss" scoped>
+.contentList {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 2px;
+  li {
+    border: 1px solid #ccc;
+    width: 22px;
+    height: 22px;
+    display: block;
+    text-align: center;
+    font: 14px/22px arial;
+    cursor: pointer;
+    &.active {
+      background: #333;
+      color: #fff;
+    }
+  }
+}
 .oset {
   display: flex;
   gap: 5px;

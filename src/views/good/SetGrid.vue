@@ -6,6 +6,12 @@
         type="textarea"
         v-model="mycon"
         :autosize="{ minRows: 4, maxRows: 6 }"
+        style="margin-bottom:10px;"
+      ></el-input>
+      <el-input
+        type="text"
+        size="small"
+        v-model="state.subcon"
       ></el-input>
     </el-form-item>
 
@@ -55,21 +61,21 @@
     </el-form-item>
     <el-form-item label="其他设置：">
       <div class="oset">
-        <el-color-picker v-model="state.color" size="small"></el-color-picker>
-        <el-select
-          v-model="state.class"
-          clearable
-          placeholder="请选择"
+        <el-color-picker
+          title="背景色"
+          v-model="state.color"
+          show-alpha
+          :predefine="predefineColors"
           size="small"
-        >
-          <el-option
-            v-for="item in [{ label: 'ss', value: 'aa' }]"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+        ></el-color-picker>
+
+        <el-color-picker
+          title="字体颜色"
+          v-model="state.colorFont"
+          show-alpha
+          :predefine="predefineColors"
+          size="small"
+        ></el-color-picker>
       </div>
     </el-form-item>
     <el-form-item>
@@ -160,11 +166,13 @@ const content = computed(() => {
 
 const state = reactive({
   content,
+  subcon: '二零二一年十月 某某',
   row: 14,
   col: 4,
   size: 1.6,
   font: '',
-  color: '#333333',
+  color: '#666',
+  colorFont: '#000',
   class: '',
   styleObj,
   lastItem,
@@ -187,8 +195,6 @@ init()
 <style class="scss">
 .oset {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
+  gap: 5px;
 }
 </style>

@@ -24,6 +24,12 @@
           <p>可单行对照临写，可自己设置字体！</p>
         </router-link>
       </dd>
+      <dd>
+        <router-link :to="{ path: 'jizhiwengao' }">
+          <h3>颜真卿祭侄文稿</h3>
+          <p>单字临摹</p>
+        </router-link>
+      </dd>
       <dd><hr /></dd>
       <dd>
         <h3>书法字体下载推荐<sup>(有版权的字体请勿做商用)</sup></h3>
