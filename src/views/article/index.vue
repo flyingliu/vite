@@ -8,12 +8,12 @@
           </header>
           <ul class="con" :style="styleObj">
             <li v-for="(t, index) in page" :key="index">
-              <f-td :text="t"></f-td>
+              <f-td :text="t" :border-color="data.color"></f-td>
             </li>
           </ul>
           <footer class="mfooter">
             <ul>
-              <li>
+              <li :style="{color: data.color}">
                 {{ col }} * {{ row }} = {{ col * row }} |
                 {{ (styleObj.itemWidth * 10).toFixed(1) }} MM *
                 {{ (styleObj.itemWidth * 10).toFixed(1) }} MM
@@ -70,9 +70,32 @@
         <el-form-item label="列数设置：">
           <el-slider v-model="col" :max="25" :min="3"></el-slider>
         </el-form-item>
+    <el-form-item label="其他设置：">
+      <div class="oset">
+        <el-color-picker
+          title="背景色"
+          v-model="data.color"
+          show-alpha
+          :predefine="predefineColors"
+          size="small"
+        ></el-color-picker>
+
+        <el-color-picker
+          title="字体颜色"
+          v-model="data.colorFont"
+          show-alpha
+          :predefine="predefineColors"
+          size="small"
+        ></el-color-picker>
+      </div>
+    </el-form-item>
+
+
         <el-form-item>
           <el-button type="primary" @click="print" size="small">打印</el-button>
         </el-form-item>
+
+
       </el-form>
     </aside>
   </div>
@@ -88,6 +111,7 @@ import { ref, reactive, computed } from 'vue'
 
 const SCALE = 0.72
 
+
 const content = `  庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。
 予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯，朝晖夕阴，气象万千，此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？
 若夫淫雨霏霏，连月不开，阴风怒号，浊浪排空，日星隐曜，山岳潜形，商旅不行，樯倾楫摧，薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。
@@ -102,6 +126,8 @@ const changeCon = () => {
 const print = () => {
   window.print()
 }
+
+
 
 const handleChange = (file) => {
   console.log('+++', file)
@@ -186,6 +212,19 @@ const getPage = (val, col, row) => {
 }
 const mycon = ref(content)
 
+const data = reactive({
+  name: mycon.value,
+  region: '122',
+  date1: '',
+  date2: '',
+  delivery: false,
+  color: '#999',
+  colorFont: '#000',
+  type: [],
+  resource: '',
+  desc: 'dd',
+})
+
 const PAGEWIDTH = 18
 const PAGEHEIGHT = 26
 const GAP = 0.2
@@ -202,6 +241,8 @@ const abc = computed(() => {
     'repeat(' + row.value + ', ' + itemWidth * 2 + 'cm)'
   styleObj.font = itemWidth * SCALE + 'cm/' + itemWidth + 'cm arial'
   styleObj.itemWidth = itemWidth
+  styleObj.color = data.colorFont
+  styleObj.borderColor = data.color
   return getPage(mycon.value, col.value, row.value)
 })
 
@@ -210,20 +251,13 @@ const styleObj = reactive({
   gridTemplateRows: 'repeat(4, 25%)',
   font: '',
   itemWidth: '',
+  color: '',
+  borderColor: ''
 })
 
 loadFonts(family.familylist[0])
 
-const data = reactive({
-  name: mycon.value,
-  region: '122',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: 'dd',
-})
+
 </script>
 
 <style lang="scss"></style>

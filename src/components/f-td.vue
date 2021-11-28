@@ -1,9 +1,9 @@
 <template>
   <div class="td">
-    <span>
+    <span :style="{borderColor: borderColor}">
       {{ text }}
     </span>
-    <span> </span>
+    <span :style="{borderColor: borderColor}"> </span>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ import { ref } from 'vue'
 
 const props = defineProps({
   text: String,
+  borderColor: String
 })
 
 const count = ref(0)

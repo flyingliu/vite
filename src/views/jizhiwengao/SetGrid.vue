@@ -24,13 +24,6 @@
           size="small"
         ></el-color-picker>
 
-        <el-input-number
-          v-model="state.repeat"
-          :min="1"
-          :max="6"
-          size="small"
-          style="width:100px;"
-        />
         <el-select
           v-model="state.icon"
           clearable
@@ -50,7 +43,18 @@
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" @click="print" size="small">打印</el-button>
+      <el-button @click="reset" size="small">重置</el-button>
+      <el-button type="primary" @click="autoPlay" size="small">{{
+        isAutoPlay ? '暂停播放' : '自动播放'
+      }}</el-button>
+
+      <el-input-number
+        v-model="state.repeat"
+        :min="1"
+        :max="6"
+        size="small"
+        style="width:100px; margin: 0 10px;"
+      />
     </el-form-item>
   </el-form>
 </template>
@@ -92,13 +96,53 @@ const GAP = 0.2
 const SCALE = 0.75
 
 const mycon = ref(null)
+const content = ref([])
+const isAutoPlay = ref(false)
+const addText = (item, isAutoPlay) => {
+  if (isAutoPlay) {
+    reset()
+    item.active = true
+    content.value = [item]
+    return false
+  }
+  if (!item.active) {
+    item.active = true
+    content.value.push(item)
+  } else {
+    item.active = false
+    content.value = content.value.filter((v) => v !== item)
+  }
 
-const addText = (item) => {
-  item.active = !item.active
   setBg(item)
 }
 
-([0, 1]).forEach((i) => addText(contentList.value[i]))
+const currIndex = ref(0)
+const PLAYITEM = 2000
+let timer
+
+const autoPlay = () => {
+  if (isAutoPlay.value) {
+    isAutoPlay.value = false
+    clearInterval(timer)
+    return
+  }
+
+  isAutoPlay.value = true
+
+  const len = contentList.value.length - 1
+
+  timer = setInterval(() => {
+    if (currIndex.value < len) {
+      addText(contentList.value[currIndex.value], true)
+      currIndex.value++
+    } else {
+      currIndex.value = 0
+    }
+    console.log('currIndex.value', currIndex.value)
+  }, PLAYITEM * state.repeat)
+}
+
+;[0, 1].forEach((i) => addText(contentList.value[i]))
 
 const item = computed(() => ({
   width: state.size + 'cm',
@@ -107,12 +151,13 @@ const item = computed(() => ({
   color: state.color,
 }))
 
-const content = computed(() => {
-  return contentList.value.filter((v) => v.active)
-})
+const reset = () => {
+  contentList.value.forEach((v) => (v.active = false))
+  content.value = []
+}
 
 const row = computed(() => Math.floor(PAGEHEIGHT / state.size))
-const size = computed(() => PAGEWIDTH / state.repeat)
+const size = computed(() => PAGEWIDTH / (content.value.length || 1))
 
 const state = reactive({
   col: 1,
