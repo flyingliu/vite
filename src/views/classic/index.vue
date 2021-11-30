@@ -79,14 +79,35 @@ $line: #999;
     position: relative;
     z-index: 9;
   }
+  // &:nth-child(6n + 1) {
+  //   &.icon0::before {
+  //     content: '\e604';
+  //   }
+  // }
+
+  &.icon0 {
+    &:nth-child(6n + 1)::before {
+      content: '\e604';
+    }
+    &:nth-child(6n + 2)::before {
+      content: '\e604';
+    }
+    &:nth-child(6n + 3)::before {
+      content: '\e605';
+    }
+    &:nth-child(6n + 4)::before {
+      content: '\e605';
+    }
+  }
+
   &.icon1::before {
-    content: '\e600';
+    content: '\e604';
   }
   &.icon2::before {
-    content: '\e601';
+    content: '\e605';
   }
   &.icon3::before {
-    content: '\e602';
+    content: '\e606';
   }
   &::before {
     font-family: 'iconfont';

@@ -212,7 +212,7 @@ const state = reactive({
   color: '#e00',
   colorFont: '#000',
   repeat: 6,
-  icon: 'icon1',
+  icon: 'icon0',
 })
 
 const print = () => window.print()
@@ -235,6 +235,11 @@ const predefineColors = ref([
 ])
 
 const iconList = [
+
+  {
+    label: '混合格子',
+    value: 'icon0',
+  },
   {
     label: '带点米字格',
     value: 'icon1',
