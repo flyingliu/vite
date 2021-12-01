@@ -113,7 +113,7 @@ const addText = (item, isAutoPlay) => {
     content.value = content.value.filter((v) => v !== item)
   }
 
-  setBg(item)
+  // setBg(item)
 }
 
 const currIndex = ref(0)
@@ -168,7 +168,7 @@ const state = reactive({
   item,
   color: 'rgba(0,0,0,.5)',
   repeat: 2,
-  colors: [],
+  colors: ['#efd49f'],
   icon: 'icon1',
 })
 
