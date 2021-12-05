@@ -63,7 +63,7 @@
       <div class="oset">
         <el-color-picker
           title="背景色"
-          v-model="data.color"
+          v-model="state.color"
           show-alpha
           :predefine="predefineColors"
           size="small"
