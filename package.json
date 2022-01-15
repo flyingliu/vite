@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "element-plus": "^1.1.0-beta.24",
+    "gsap": "^3.8.0",
     "vite-plugin-resolve-externals": "^0.1.0",
     "vite-plugin-style-import": "^1.2.1",
     "vue": "^3.2.6",

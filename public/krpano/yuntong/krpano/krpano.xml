@@ -1,0 +1,11 @@
+<krpano showerrors="false">
+    <include url="%SWFPATH%/skin/plugin/contextmenu.xml"/>
+    <include url="%$URL%/getIconXml"/>
+    <include url="%SWFPATH%/skin/plugin/config.xml"/>
+
+    <plugin keep="true" url="%$CODEURL%/plugin.js"/>
+
+    <security cors="*">
+    <allowdomain domain="*" />
+</security>
+</krpano>

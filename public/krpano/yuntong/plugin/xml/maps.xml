@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano>
+    <style name="default_maps" maskchildren="true" keep="true" ondown="skin_maps_draglayer();" radar_scale="1" scalechildren="true" updatescale="skin_maps_updatescale()"/>
+    <style name="default_maps_bg" keep="true" scalechildren="true" type="container" capture="false"/>
+
+    <!-- 热点默认样式 -->
+    <style name="mapspot" keep="true" url="%$STATIC%images/point.png" align="lefttop" edge="center" />
+
+    <!-- 选中的热点 -->
+    <layer name="activespot" url="%$STATIC%images/point_click.png" visible="false" keep="true" zorder="2"/>
+
+    <!-- 扫描样式 -->
+    <layer name="radar" keep="true" width="100" height="100" url.flash="%SWFPATH%/plugins/radar.swf" url.html5="%SWFPATH%/plugins/radar.js" edge="centent" visible="false" align="center" zorder="1" scale="1" fillalpha="0.5" fillcolor="0x7F5F3F" linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"/>
+
+    <!-- 扫描样式 -->
+    <layer name="editradar" visible="false" heading="0" width="75" height="75" keep="true" url.flash="%SWFPATH%/plugins/radar.swf" url.html5="%SWFPATH%/skin/plugin/radar_edit.js" edge="centent" align="center" zorder="1" fillalpha="0.5" fillcolor="0x986532" linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"/>
+
+    <layer name="maps_bg" keep="true" type="container" visible="false" bgcolor="0x000000" width="75" height="75" bgalpha="0.4" bgroundedge="37" align="center" edge="center"/>
+
+    <layer name="maps_round" url="%$STATIC%images/icon.png" keep="true" align="center" edge="center" visible="false"/>
+
+    <layer name="maps_point" keep="true" parent="maps_round" align="center" visible="false" edge="center" y="-37" style="maps_point_default" onhover="loadstyle(maps_point_hover);" onout="ifnot(pressed, loadstyle(maps_point_default););" onup="ifnot(pressed, loadstyle(maps_point_default););"/>
+
+    <style name="maps_point_hover" url="%$STATIC%images/icon1_1.png"/>
+    <style name="maps_point_default" url="%$STATIC%images/icon2_2.png"/>
+
+    <!-- 选中的热点 -->
+    <layer name="editactivespot" x="-28" y="-28" type="container" width="80" height="80" bgroundedge="80" bgcolor="0x000000" bgalpha="0.5" visible="false" keep="true" zorder="2" />
+
+    <action name="skin_maps_onloaded"><![CDATA[
+        copy(bgwidth, plugin[get(parent)].width);
+        copy(bgheight, plugin[get(parent)].height);
+
+        sub(cw, bgwidth, imagewidth);
+        sub(ch, bgheight, imageheight);
+
+        if(is_move != true,
+            set(bigscale, 1);
+
+            if(imagewidth < bgwidth,
+                div(bigscale, bgwidth, imagewidth);
+            );
+
+            if(imageheight < bgheight,
+                div(heightscale, bgheight, imageheight);
+
+                if(bigscale > heightscale,
+                    copy(bigscale, heightscale);
+                );
+            );
+
+            if(imagewidth > bgwidth,
+                div(bigscale, bgwidth, imagewidth);
+            );
+
+            if(imageheight > bgheight,
+                div(heightscale, bgheight, imageheight);
+
+                if(bigscale > heightscale,
+                    copy(bigscale, heightscale);
+                );
+            );
+
+            copy(scale, bigscale);
+            mul(scale_width, imagewidth, scale);
+            mul(scale_height, imageheight, scale);
+            div(radar_scale, imagewidth, scale_width);
+            mul(radar_scale, defualt_point_scale);
+            copy(plugin[get(name)].radar_scale, radar_scale);
+            callwith(plugin[get(name)], updatescale);
+
+            sub(cw, bgwidth, scale_width);
+            sub(ch, bgheight, scale_height);
+        );
+
+        if(cw > 0,
+            div(x, cw, 2);
+        ,
+            set(x, 0);
+        );
+
+        if(ch > 0,
+            div(y, ch, 2);
+        ,
+            set(y, 0);
+        );
+    ]]></action>
+
+    <action name="skin_maps_updatescale" type="Javascript"><![CDATA[
+        for(var i in caller.maps) {
+            for(var j in caller.maps[i].radars){
+                var radar = caller.maps[i].radars[j];
+                radar.plugin.scale = caller.radar_scale;
+            }
+        }
+    ]]></action>
+    <!-- console.log(radar, caller.radar_scale, radar.plugin.visible); -->
+
+    <action name="skin_maps_draglayer">
+        <![CDATA[
+            ifnot(x, set(x, 0););
+            ifnot(y, set(y, 0););
+
+            if(is_move == true,
+                if(%1 != dragging,
+                    copy(dx, mouse.stagex);
+                    copy(dy, mouse.stagey);
+                    copy(cx, x);
+                    copy(cy, y);
+
+                    if(plugin[get(parent)].scale != 1,
+                        mul(cx, plugin[get(parent)].scale);
+                        mul(cy, plugin[get(parent)].scale);
+                    );
+
+                    copy(bgwidth, plugin[get(parent)].width);
+                    copy(bgheight, plugin[get(parent)].height);
+
+                    if(edge == center,
+                        copy(drag_max_x, bgwidth);
+                        copy(drag_max_y, bgheight);
+                    ,
+                        sub(drag_max_x, bgwidth, width);
+                        sub(drag_max_y, bgheight, height);
+                    );
+
+                    skin_maps_draglayer(dragging);
+                ,
+                    if(pressed,
+                        sub(drag_x, mouse.stagex, dx);
+                        sub(drag_y, mouse.stagey, dy);
+
+                        add(drag_x, cx);
+                        add(drag_y, cy);
+
+                        if(plugin[get(parent)].scale != 1,
+                            div(drag_x, plugin[get(parent)].scale);
+                            div(drag_y, plugin[get(parent)].scale);
+                        );
+
+                        if(((drag_max_x GE 0 AND drag_x LE drag_max_x AND drag_x GE 0) OR (drag_max_x LT 0 AND drag_x GE drag_max_x AND drag_x LT 0)),
+                            copy(x, drag_x);
+                        ,
+                            if((drag_max_x GE 0 AND drag_x GT drag_max_x) OR (drag_max_x LT 0 AND drag_x LT drag_max_x),
+                                copy(x, drag_max_x);
+                            ,
+                                set(x, 0);
+                            );
+                        );
+
+                        trace(drag_max_y);
+                        trace(drag_max_x);
+                        trace(drag_y);
+                        trace(drag_x);
+                        trace(get((drag_max_y GE 0)));
+                        if(((drag_max_y GE 0 && drag_y LE drag_max_y AND drag_y GE 0) || (drag_max_y LT 0 && drag_y GE drag_max_y && drag_y LT 0)),
+                            copy(y, drag_y);
+                        ,
+                            if((drag_max_y GE 0 && drag_y GT drag_max_y) || (drag_max_y LT 0 && drag_y LT drag_max_y),
+                                copy(y, drag_max_y);
+                            ,
+                                set(y, 0);
+                            );
+                        );
+
+                        delayedcall(0, skin_maps_draglayer(dragging););
+                    );
+                );
+            );
+	    ]]>
+    </action>
+</krpano>

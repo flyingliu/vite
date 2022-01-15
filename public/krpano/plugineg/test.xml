@@ -1,0 +1,13 @@
+<krpano onstart="showlog();">
+	
+	<preview type="grid()" />
+	
+	<plugin name="test"
+	        url.html5="pluginexample.js"
+	        align="center" y="-150"
+	        mode="testing"
+	        value="200.0"
+	        onclick="dosomething('hello', 'plugin');"
+	        />
+
+</krpano>
