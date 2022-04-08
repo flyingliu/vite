@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano>
+    <plugin name="soundinterface"
+            url.flash="%SWFPATH%/plugins/soundinterface.swf"
+            url.html5="%SWFPATH%/plugins/soundinterface.js"
+            rootpath=""
+            preload="true"
+            keep="true"
+    />
+    <action name="replay" type="Javascript"><![CDATA[
+        var data = krpano.musicData;
+        var index = krpano.musicIndex = (krpano.musicIndex + 1) % data.length;
+        krpano.call("playsound(bgsnd"+index+",'" + data[index].url + "', 1 , replay( "+index+" ) )");
+    ]]></action>
+
+</krpano>

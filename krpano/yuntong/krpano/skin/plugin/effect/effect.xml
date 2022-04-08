@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano>
+	<progress showwait="none" showload="none"/>
+	<!--
+	 set reduced display quality for faster rendering performance 
+	-->
+	<display details="14" flash10="off" movequality="LOW" stillquality="LOW" devices="flash"/>
+	<layer name="skin_effect_image" mode="image" imageurl="" imagescale="0.5" flakes="200" color="" floor="0.7" speed="1.0" spreading="1.5" shake="1.0" speedvariance="2.0" 
+		wind="0.0" winddir="0" rainwidth="0.5" rainalpha="0.5" visible="true" keep="true"/>
+	<events name="effect_events" 
+			keep="true"
+			onnewpano="skin_effect_onstart();"
+			onremovepano="removeplugin(skin_effect_plugin);"
+	/>
+	
+	<action name="skin_effect_onstart">
+		addplugin(skin_effect_plugin);
+		set(plugin[skin_effect_plugin].keep, true);
+		set(plugin[skin_effect_plugin].url, %SWFPATH%/plugins/snow.swf);
+		set(plugin[skin_effect_plugin].alturl, %SWFPATH%/plugins/snow.js);
+		
+		if(layer[default] AND (skin_settings.effect_share == true OR !(layer[get(xml.scene)])),
+			skin_effect_diy(default);
+		,
+			if(layer[get(xml.scene)],
+				skin_effect_diy(get(xml.scene));
+			,
+				set(plugin[skin_effect_plugin].visible,       false);	
+			);
+		);
+		
+		
+		trace(plugin[skin_effect_plugin].keep);
+	</action>
+	
+	<action name="skin_effect_diy">
+		set(name,%1);
+		copy(plugin[skin_effect_plugin].mode,          layer[get(name)].mode);
+		copy(plugin[skin_effect_plugin].imageurl,      layer[get(name)].imageurl);
+		copy(plugin[skin_effect_plugin].imagescale,    layer[get(name)].imagescale);
+		copy(plugin[skin_effect_plugin].flakes,        layer[get(name)].flakes);
+		copy(plugin[skin_effect_plugin].color,         layer[get(name)].color);
+		copy(plugin[skin_effect_plugin].floor,         layer[get(name)].floor);
+		copy(plugin[skin_effect_plugin].speed,         layer[get(name)].speed);
+		copy(plugin[skin_effect_plugin].spreading,     layer[get(name)].spreading);
+		copy(plugin[skin_effect_plugin].shake,         layer[get(name)].shake);
+		copy(plugin[skin_effect_plugin].speedvariance, layer[get(name)].speedvariance);
+		copy(plugin[skin_effect_plugin].wind,          layer[get(name)].wind);
+		copy(plugin[skin_effect_plugin].winddir,       layer[get(name)].winddir);
+		copy(plugin[skin_effect_plugin].rainwidth,     layer[get(name)].rainwidth);
+		copy(plugin[skin_effect_plugin].rainalpha,     layer[get(name)].rainalpha);
+		copy(plugin[skin_effect_plugin].visible,   	   layer[get(name)].visible);
+	</action>
+	<action name="skin_effect_diy2">
+		set(name,%1);
+		addlayer(get(name));
+		set(layer[get(name)].mode,         	image);
+		set(layer[get(name)].imageurl,      %2);
+		copy(layer[get(name)].imagescale,    layer[skin_effect_image].imagescale);
+		copy(layer[get(name)].flakes,        layer[skin_effect_image].flakes);
+		copy(layer[get(name)].color,         layer[skin_effect_image].color);
+		copy(layer[get(name)].floor,         layer[skin_effect_image].floor);
+		copy(layer[get(name)].speed,         layer[skin_effect_image].speed);
+		copy(layer[get(name)].spreading,     layer[skin_effect_image].spreading);
+		copy(layer[get(name)].shake,         layer[skin_effect_image].shake);
+		copy(layer[get(name)].speedvariance, layer[skin_effect_image].speedvariance);
+		copy(layer[get(name)].wind,          layer[skin_effect_image].wind);
+		copy(layer[get(name)].winddir,       layer[skin_effect_image].winddir);
+		copy(layer[get(name)].rainwidth,     layer[skin_effect_image].rainwidth);
+		copy(layer[get(name)].rainalpha,     layer[skin_effect_image].rainalpha);
+		set(layer[get(name)].visible,   	true);
+		set(layer[get(name)].keep,   		true);
+		set(layer[get(name)].is_use,   	  0);
+		skin_effect_diy(get(name));
+	</action>
+	<action name="skin_effect_diy3">
+		copy(layer[default].mode,          layer[get(xml.scene)].mode);
+		copy(layer[default].imageurl,      layer[get(xml.scene)].imageurl);
+		copy(layer[default].imagescale,    layer[get(xml.scene)].imagescale);
+		copy(layer[default].flakes,        layer[get(xml.scene)].flakes);
+		copy(layer[default].color,         layer[get(xml.scene)].color);
+		copy(layer[default].floor,         layer[get(xml.scene)].floor);
+		copy(layer[default].speed,         layer[get(xml.scene)].speed);
+		copy(layer[default].spreading,     layer[get(xml.scene)].spreading);
+		copy(layer[default].shake,         layer[get(xml.scene)].shake);
+		copy(layer[default].speedvariance, layer[get(xml.scene)].speedvariance);
+		copy(layer[default].wind,          layer[get(xml.scene)].wind);
+		copy(layer[default].winddir,       layer[get(xml.scene)].winddir);
+		copy(layer[default].rainwidth,     layer[get(xml.scene)].rainwidth);
+		copy(layer[default].rainalpha,     layer[get(xml.scene)].rainalpha);
+		copy(layer[default].visible,   	   layer[get(xml.scene)].visible);
+		copy(layer[default].keep,   	   layer[get(xml.scene)].keep);
+		set(layer[default].is_use,   	  0);
+	</action>
+	<action name="skin_effect_diy_image">
+		if(layer[get(xml.scene)],
+			set(layer[get(xml.scene)].mode,         image);
+			set(layer[get(xml.scene)].imageurl,     %1);
+			set(layer[get(xml.scene)].flakes,       200);
+			skin_effect_diy(get(xml.scene));
+			set(skin_settings.effect_share,   false);
+			set(layer[get(xml.scene)].effect_id,   '');
+			
+		,
+			if(skin_settings.effect_share == true,
+				skin_effect_diy2(get(xml.scene),%1);
+				set(skin_settings.effect_share,   false);
+				set(layer[get(xml.scene)].effect_id,   '');
+			,
+				skin_effect_diy2(get(xml.scene),%1);
+				set(layer[get(xml.scene)].effect_id,   '');
+			);
+		
+		);
+	</action>
+	<action name="skin_effect_diy_open">
+		if(layer[get(xml.scene)],
+			if(skin_settings.effect_share == true,
+				copy(layer[get(xml.scene)].mode,          layer[default].mode);
+				copy(layer[get(xml.scene)].imageurl,      layer[default].imageurl);
+				copy(layer[get(xml.scene)].imagescale,    layer[default].imagescale);
+				copy(layer[get(xml.scene)].flakes,        layer[default].flakes);
+				copy(layer[get(xml.scene)].color,         layer[default].color);
+				copy(layer[get(xml.scene)].floor,         layer[default].floor);
+				copy(layer[get(xml.scene)].speed,         layer[default].speed);
+				copy(layer[get(xml.scene)].spreading,     layer[default].spreading);
+				copy(layer[get(xml.scene)].shake,         layer[default].shake);
+				copy(layer[get(xml.scene)].speedvariance, layer[default].speedvariance);
+				copy(layer[get(xml.scene)].wind,          layer[default].wind);
+				copy(layer[get(xml.scene)].winddir,       layer[default].winddir);
+				copy(layer[get(xml.scene)].rainwidth,     layer[default].rainwidth);
+				copy(layer[get(xml.scene)].rainalpha,     layer[default].rainalpha);
+				copy(layer[get(xml.scene)].visible,   	  layer[default].visible);
+				copy(layer[get(xml.scene)].keep,   		  layer[default].keep);
+				set(layer[get(xml.scene)].is_use,   	  0);
+				set(layer[get(xml.scene)].effect_id,   	  layer[default].effect_id);
+				if(layer[get(xml.scene)].visible == true,
+					set(layer[get(xml.scene)].visible,      	false);
+					set(layer[get(xml.scene)].is_use,      		"1");
+				,
+					set(layer[get(xml.scene)].visible,      	true);
+					set(layer[get(xml.scene)].is_use,      		"0");
+				);
+				set(skin_settings.effect_share,   false);
+				skin_effect_diy(get(xml.scene));
+			,
+				if(layer[get(xml.scene)].visible == true
+				,
+					trace(111);
+					set(layer[get(xml.scene)].visible,      	false);
+					set(layer[get(xml.scene)].is_use,      		"1");
+				,
+					trace(222);
+					set(layer[get(xml.scene)].visible,      	true);
+					set(layer[get(xml.scene)].is_use,      		"0");
+				);
+				skin_effect_diy(get(xml.scene));
+			);
+		,
+			addlayer(get(xml.scene));
+			copy(layer[get(xml.scene)].mode,          layer[default].mode);
+			copy(layer[get(xml.scene)].imageurl,      layer[default].imageurl);
+			copy(layer[get(xml.scene)].imagescale,    layer[default].imagescale);
+			copy(layer[get(xml.scene)].flakes,        layer[default].flakes);
+			copy(layer[get(xml.scene)].color,         layer[default].color);
+			copy(layer[get(xml.scene)].floor,         layer[default].floor);
+			copy(layer[get(xml.scene)].speed,         layer[default].speed);
+			copy(layer[get(xml.scene)].spreading,     layer[default].spreading);
+			copy(layer[get(xml.scene)].shake,         layer[default].shake);
+			copy(layer[get(xml.scene)].speedvariance, layer[default].speedvariance);
+			copy(layer[get(xml.scene)].wind,          layer[default].wind);
+			copy(layer[get(xml.scene)].winddir,       layer[default].winddir);
+			copy(layer[get(xml.scene)].rainwidth,     layer[default].rainwidth);
+			copy(layer[get(xml.scene)].rainalpha,     layer[default].rainalpha);
+			copy(layer[get(xml.scene)].visible,   	  layer[default].visible);
+			copy(layer[get(xml.scene)].keep,   		  layer[default].keep);
+			set(layer[get(xml.scene)].effect_id,   	  layer[default].effect_id);
+			if(layer[get(xml.scene)].visible == true,
+				set(layer[get(xml.scene)].visible,      	false);
+				set(layer[get(xml.scene)].is_use,      		"1");
+			,
+				set(layer[get(xml.scene)].visible,      	true);
+				set(layer[get(xml.scene)].is_use,      		"0");
+			);
+			set(skin_settings.effect_share,   false);
+			skin_effect_diy(get(xml.scene));
+		);
+		
+	</action>
+	<action name="skin_effect_diy_all">
+		if(layer[default],
+			if(layer[get(xml.scene)],
+				skin_effect_diy3();
+				set(plugin[skin_effect_plugin].visible,       true);
+				set(skin_settings.effect_share,       		  true);
+				copy(layer[default].effect_id,   	   layer[get(xml.scene)].effect_id);
+			,
+				set(plugin[skin_effect_plugin].visible,       true);
+				set(skin_settings.effect_share,       		  true);
+			);
+		,
+			addlayer(default);
+			skin_effect_diy3();
+			set(plugin[skin_effect_plugin].visible,       true);
+			set(skin_settings.effect_share,       		  true);
+			copy(layer[default].effect_id,   	   layer[get(xml.scene)].effect_id);
+		);
+	</action>
+	<action name="skin_effect_diy_default">
+		if(layer[get(xml.scene)],
+			copy(layer[get(xml.scene)].mode,         layer[%1].mode);
+			copy(layer[get(xml.scene)].imageurl,     layer[%1].imageurl);
+			copy(layer[get(xml.scene)].flakes,       layer[%1].flakes);
+			copy(layer[get(xml.scene)].color,        layer[%1].color);
+			copy(layer[get(xml.scene)].effect_id,   	 layer[%1].effect_id);
+			set(layer[get(xml.scene)].is_use,      		"0");
+			set(layer[get(xml.scene)].visible,   	  true);
+			skin_effect_diy(get(xml.scene));
+			set(skin_settings.effect_share,   false);
+			
+		,
+			addlayer(get(xml.scene));
+			copy(layer[get(xml.scene)].mode,          layer[%1].mode);
+			copy(layer[get(xml.scene)].imageurl,      layer[%1].imageurl);
+			copy(layer[get(xml.scene)].imagescale,    layer[%1].imagescale);
+			copy(layer[get(xml.scene)].flakes,        layer[%1].flakes);
+			copy(layer[get(xml.scene)].color,         layer[%1].color);
+			copy(layer[get(xml.scene)].floor,         layer[%1].floor);
+			copy(layer[get(xml.scene)].speed,         layer[%1].speed);
+			copy(layer[get(xml.scene)].spreading,     layer[%1].spreading);
+			copy(layer[get(xml.scene)].shake,         layer[%1].shake);
+			copy(layer[get(xml.scene)].speedvariance, layer[%1].speedvariance);
+			copy(layer[get(xml.scene)].wind,          layer[%1].wind);
+			copy(layer[get(xml.scene)].winddir,       layer[%1].winddir);
+			copy(layer[get(xml.scene)].rainwidth,     layer[%1].rainwidth);
+			copy(layer[get(xml.scene)].rainalpha,     layer[%1].rainalpha);
+			copy(layer[get(xml.scene)].visible,   	  true);
+			copy(layer[get(xml.scene)].keep,   		  layer[%1].keep);
+			copy(layer[get(xml.scene)].effect_id,   	 layer[%1].effect_id);
+			set(layer[get(xml.scene)].is_use,      		"0");
+			skin_effect_diy(get(xml.scene));
+			if(skin_settings.effect_share == true,
+				set(skin_settings.effect_share,       		  false);
+			);
+		
+		);
+	</action>
+</krpano>

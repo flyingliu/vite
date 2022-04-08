@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano>
+	<skin_settings nadirlgo_bg_url="%SWFPATH%/nadirbg.png"
+				   nadirlogo_default_url="%SWFPATH%/yutong2.png"
+				   nadirlogo_default_open_url="https://www.aoliliya.com"
+				   nadirlogo_wait="2"
+
+				   nadirlogo_land="true"
+				   nadirlogo_land_url="%SWFPATH%/yutong2.png"
+				   nadirlogo_land_open_url="https//www.aoliliya.com"
+
+				   nadirlogo_sky="true"
+				   nadirlogo_sky_url="%SWFPATH%/yutong2.png"
+				   nadirlogo_sky_open_url="https://www.aoliliya.com"
+
+				   current_hotspot="skin_nadirlogo_land"
+
+	/>
+
+<!-- 	<events name="skin_nadirlogo_events" keep="true"
+			onnewscene="skin_nadirlogo_onstart(false);skin_nadirlogo_onstart(true);"
+	/> -->
+
+	<events name="nadirlogorotation" keep="true" onviewchange="if(hotspot[skin_nadirlogo_land].rotatewithview,
+															   set(hotspot[skin_nadirlogo_land].rotate,get(view.hlookat));
+															   );
+															   if(hotspot[skin_nadirlogo_sky].rotatewithview,
+															   mul(temp,get(view.hlookat),-1);
+															   set(hotspot[skin_nadirlogo_sky].rotate,get(temp));;
+															   );"/>
+	<!-- 补地热点 -->
+	<hotspot name="skin_nadirlogo_land" width="400" height="400" rotatewithview="true" style="nadirStyleLand" logo="%SWFPATH%/DUC2.png"/>
+
+	<style name="nadirStyleLand" onloaded="skin_nadir_pic_resize(get(name),true)"
+		   keep="true" visible="false" capture="false" ath="0" atv="90" distorted="true" scale="1.0" rotate="0.0" rotatewithview="true" children="true"/>
+
+	<!-- 补天热点 -->
+	<hotspot name="skin_nadirlogo_sky" width="400" height="400" rotatewithview="true" style="nadirStyleSky" logo="%SWFPATH%/DUC2.png"/>
+
+	<style name="nadirStyleSky" onloaded="skin_nadir_pic_resize(get(name),true)"
+		   keep="true" visible="false" capture="false" ath="0" atv="-90" distorted="true" scale="1.0" rotate="0.0" rotatewithview="true" children="true"/>
+
+
+	<!--
+		设置默认值
+			{boolean] skyFlag  true表示设置补天，false表示设置补地
+	 -->
+	<action name="skin_nadirlogo_onstart">
+		if(%1,
+			if(skin_settings.nadirlogo_sky_url != "",
+				skin_nadirlogo_set_nadirlogo(get(skin_settings.nadirlogo_sky_url),,%1);
+			,
+				skin_nadirlogo_set_nadirlogo(get(skin_settings.nadirlogo_default_url),,%1);
+			);
+			skin_nadirlogo_swith_visible(get(skin_settings.nadirlogo_sky),%1);
+		,
+			if(skin_settings.nadirlogo_land_url != "",
+				skin_nadirlogo_set_nadirlogo(get(skin_settings.nadirlogo_land_url),,%1);
+			,
+				skin_nadirlogo_set_nadirlogo(get(skin_settings.nadirlogo_default_url),,%1);
+			);
+			skin_nadirlogo_swith_visible(get(skin_settings.nadirlogo_land),%1);
+		);
+
+
+		<!-- 防止加载失败,加载失败后 使用nadirlogo_default_url -->
+		delayedcall(get(skin_settings.nadirlogo_wait),
+			if(skin_settings.nadirlogo_status != true,
+				skin_nadirlogo_set_nadirlogo(get(skin_settings.nadirlogo_default_url),,%1);
+			);
+		);
+	</action>
+
+	<!--
+		切换显示
+			{boolean}  true 显示,false 隐藏
+	 -->
+	<action name="skin_nadirlogo_swith_visible">
+		if(%2,
+			set(skin_settings.current_hotspot,skin_nadirlogo_sky);
+		,
+			set(skin_settings.current_hotspot,skin_nadirlogo_land);
+		);
+
+		if(%1,
+			set(hotspot[get(skin_settings.current_hotspot)].visible, true);
+		,
+			if(%1 == false,
+				set(hotspot[get(skin_settings.current_hotspot)].visible, false);
+				,
+				if(%1 == null and hotspot[get(skin_settings.current_hotspot)].visible == false,
+					set(hotspot[get(skin_settings.current_hotspot)].visible, true);
+				,
+					set(hotspot[get(skin_settings.current_hotspot)].visible, false);
+				);
+			)
+		);
+	</action>
+
+	<action name="skin_nadirlogo_resize">
+		if(%1,
+			set(skin_settings.current_hotspot,skin_nadirlogo_sky);
+		,
+			set(skin_settings.current_hotspot,skin_nadirlogo_land);
+		);
+		set(hotspot[get(skin_settings.current_hotspot)].visible, true);
+		skin_nadirlogo_set_nadirlogo(get(skin_settings.nadirlogo_default_url), get(skin_settings.nadirlogo_default_open_url),%1);
+
+	</action>
+	<!--
+		设置底部图片
+			{string}  底部图片
+			{string}  openurl
+			{boolean}  skyFlag  true表示设置补天，false表示设置补地
+	 -->
+	<action name="skin_nadirlogo_set_nadirlogo">
+		set(hasnadirlink,%2);
+		if(%3,
+			set(skin_settings.current_hotspot,skin_nadirlogo_sky);
+			set(skin_settings.nadirlogo_sky,true);
+			set(skin_settings.nadirlogo_sky_url, %1);
+			if(hasnadirlink,
+				set(skin_settings.nadirlogo_sky_open_url, %2);
+			);
+		,
+			set(skin_settings.current_hotspot,skin_nadirlogo_land);
+			set(skin_settings.nadirlogo_land,true);
+			set(skin_settings.nadirlogo_land_url, %1);
+			if(hasnadirlink,
+				set(skin_settings.nadirlogo_land_open_url, %2);
+			);
+		);
+		set(hotspot[get(skin_settings.current_hotspot)].url, get(skin_settings.nadirlgo_bg_url));
+
+		skin_nadir_onload_pic(get(skin_settings.current_hotspot),%3);
+	</action>
+
+	<!-- 设置补地图片和超链接，%1为图片地址，%2为超链接地址，%3为skyFlag -->
+	<action name="skin_set_nadir">
+		if(%3,
+			set(skin_settings.current_hotspot,skin_nadirlogo_sky);
+		,
+			set(skin_settings.current_hotspot,skin_nadirlogo_land);
+		);
+		set(hotspot[get(skin_settings.current_hotspot)].visible, true);
+		skin_nadirlogo_set_nadirlogo(%1,%2,%3);
+	</action>
+
+	<!--
+		设置底部图片
+				{string}  热点名字
+				{boolean}  skyFlag  true表示设置补天，false表示设置补地
+	-->
+	<action name="skin_nadir_onload_pic">
+		if(%2,
+			set(skin_settings.current_hotspot,skin_nadirlogo_sky);
+			set(tempUrl,skin_settings.nadirlogo_sky_url);
+			set(tempOpenUrl,get(skin_settings.nadirlogo_sky_open_url));
+		,
+			set(skin_settings.current_hotspot,skin_nadirlogo_land);
+			set(tempUrl,skin_settings.nadirlogo_land_url);
+			set(tempOpenUrl,get(skin_settings.nadirlogo_land_open_url));
+		);
+
+		copy(hotspot[%1].url,get(tempUrl));
+
+		set(hotspot[get(skin_settings.current_hotspot)].onclick,"if(tempOpenUrl != null AND tempOpenUrl != '' AND skin_settings.isEdit != true,open_link(get(tempOpenUrl)));");
+	</action>
+
+	<!--
+		缩放图片
+			name: layername
+			boolean: 是否居中
+	 -->
+	<action name="skin_nadir_pic_resize">
+		div(aspect, hotspot[%1].imagewidth, hotspot[%1].imageheight);
+		mul(new_width, hotspot[%1].width, 1);
+		div(new_height, new_width, aspect);
+		mul(max_height, hotspot[%1].height, 1);
+		if(new_height GT max_height,
+		copy(new_height, max_height);
+		mul(new_width, new_height, aspect);
+		);
+
+		roundval(new_width);
+		roundval(new_height);
+		copy(hotspot[%1].width, new_width);
+		copy(hotspot[%1].height, new_height);
+
+		if(%2 == true,
+		sub(new_x, hotspot[%1].width, new_width);
+		div(new_x, 2);
+		copy(hotspot[%1].x, new_x);
+
+		sub(new_y, hotspot[%1].width, new_height);
+		div(new_y, 2);
+		copy(hotspot[%1].y, new_y);
+		);
+	</action>
+
+	<action name="open_link" type="Javascript"><![CDATA[
+    	window.location.href=args[1];
+	]]></action>
+
+
+</krpano>

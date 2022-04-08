@@ -1,0 +1,247 @@
+<krpano>
+
+	<style name="spot1" url="%SWFPATH%/skin/hotspotskin/spot1.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot2" url="%SWFPATH%/skin/hotspotskin/spot2.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot3" url="%SWFPATH%/skin/hotspotskin/spot3.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot4" url="%SWFPATH%/skin/hotspotskin/spot4.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot5" url="%SWFPATH%/skin/hotspotskin/spot5.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot6" url="%SWFPATH%/skin/hotspotskin/spot6.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot7" url="%SWFPATH%/skin/hotspotskin/spot7.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot8" url="%SWFPATH%/skin/hotspotskin/spot8.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot9" url="%SWFPATH%/skin/hotspotskin/spot9.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot10" url="%SWFPATH%/skin/hotspotskin/spot10.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot11" url="%SWFPATH%/skin/hotspotskin/spot11.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot12" url="%SWFPATH%/skin/hotspotskin/spot12.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot13" url="%SWFPATH%/skin/hotspotskin/spot13.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot14" url="%SWFPATH%/skin/hotspotskin/spot14.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+
+	<style name="spot15" url="%SWFPATH%/skin/hotspotskin/spot15.png"
+		scale="0.5" edge="top" oy="0" distorted="false" onloaded="if(tooltipvalue, add_all_the_time_tooltip(););" onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+	
+	<!-- 	animation hotspot -->
+	<style name="new_spotd1" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd1_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd2" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd2_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd3" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd3_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd4" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd4_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd5" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd5_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd6" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd6_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd7" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd7_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd9" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd9_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd11" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd11_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd12" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd12_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="24" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+		
+	<!--foot print forward-->
+	<style name="new_spotd131" crop="0|0|80|80" 
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd13_gif.png" framewidth="80" frametime="0.3"
+		frameheight="80" frame="0" lastframe="11" 
+		onloaded="onhotspotloadedhandler();hotspot_animate();"
+		onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()" />
+	<!--foot print left-->
+	<style name="new_spotd141" crop="0|0|80|80" 
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd14_gif.png" framewidth="80" frametime="0.3"
+		frameheight="80" frame="0" lastframe="6" 
+		onloaded="onhotspotloadedhandler();hotspot_animate();" 
+		onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"/>
+	<!--foot print right-->
+	<style name="new_spotd151" crop="0|0|80|80" 
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd15_gif.png" framewidth="80" frametime="0.3"
+		frameheight="80" frame="0" lastframe="6" 
+		onloaded="onhotspotloadedhandler();hotspot_animate();" 
+		onclick=""
+		onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"/>
+		
+	<style name="new_spotd13" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd1_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd14" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd2_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<style name="new_spotd15" crop="0|0|128|128" scale="0.5"
+		url="%SWFPATH%/skin/hotspotskin/gif/new_spotd3_gif.png" framewidth="128" frametime="0.1"
+		frameheight="128" frame="0" lastframe="9" onclick="" onup="if(id, onproducthotspotup(get(id)); );" ondown="draghotspot()"
+		onloaded="onhotspotloadedhandler();hotspot_animate();" />
+
+	<events name="nadirlogorotation" keep="true"
+		onviewchange="if(hotspot[nadirlogo].rotatewithview, set(hotspot[nadirlogo].rotate,get(view.hlookat)) );" />
+		
+	<hotspot name="nadirlogo" url="%SWFPATH%/DUC.png" ath="0" keep="true"
+		atv="90" distorted="true" scale="1.0" rotate="0.0" rotatewithview="true"
+		onclick="openurl(http://www.duc.cn/new)" />
+		
+	<!-- 	onloadpanocomplete_handler,onviewchanged_handler is registered in plugin PanoEditorMediator.mapKrpanoFunction -->
+	<events name="skin_events" keep="true"
+		onnewpano=""
+		onremovepano="" 
+		onloadcomplete="onloadpanocomplete_handler();"
+		onviewchanged="onviewchanged_handler();"
+		/>
+		
+	<!-- hotspot animation action -->
+	<action name="hotspot_animate">
+		inc(frame,1,get(lastframe),0);
+		mul(ypos,frame,frameheight);
+		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
+		
+		delayedcall(get(frametime), if(loaded, hotspot_animate() ) );
+		
+	</action>
+
+	<action name="onnewpano_handler">
+		trace(onnewpano_handler);
+	</action>
+
+	<action name="draghotspot">
+		<![CDATA[
+		if(%1 != dragging,
+			spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery);
+			sub(drag_adjustx, mouse.stagex, hotspotcenterx); 
+			sub(drag_adjusty, mouse.stagey, hotspotcentery); 
+			draghotspot(dragging);,
+			if(pressed,
+				sub(dx, mouse.stagex, drag_adjustx);
+				sub(dy, mouse.stagey, drag_adjusty);
+				screentosphere(dx, dy, ath, atv);
+				delayedcall(0, draghotspot(dragging) );
+			);
+		);
+		]]>
+	</action>
+	
+	<action name="add_all_the_time_tooltip">
+	
+		trace("add_all_the_time_tooltip");
+		
+		txtadd(tooltipnamestr, 'tooltip_', get(name));
+		
+		addplugin(get(tooltipnamestr));
+		
+		txtadd(tooltippluginparentname, 'hotspot[', get(name), ']');
+		
+		txtadd(plugin[get(tooltipnamestr)].parent, 'hotspot[', get(name), ']');
+		set(plugin[get(tooltipnamestr)].url,'%SWFPATH%/plugins/textfield.swf');
+		set(plugin[get(tooltipnamestr)].align,top);
+		set(plugin[get(tooltipnamestr)].edge,bottom);
+		set(plugin[get(tooltipnamestr)].x,0);
+		set(plugin[get(tooltipnamestr)].y,0);
+		//set(plugin[get(tooltipnamestr)].width,400);
+		set(plugin[get(tooltipnamestr)].autoheight,true);
+		set(plugin[get(tooltipnamestr)].autowidth,true);
+		
+		set(plugin[get(tooltipnamestr)].css,'text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold;font-size:16px;');
+		
+		set(plugin[get(tooltipnamestr)].background,true);
+		set(plugin[get(tooltipnamestr)].backgroundcolor,0x333333);
+		set(plugin[get(tooltipnamestr)].backgroundalpha,0.5);
+		set(plugin[get(tooltipnamestr)].border,false);
+		set(plugin[get(tooltipnamestr)].padding,"6 12");
+		set(plugin[get(tooltipnamestr)].roundedge,"2");
+		set(plugin[get(tooltipnamestr)].origin,"cursor");
+		
+		set(plugin[get(tooltipnamestr)].fontsize.no-mobile,16);
+		set(plugin[get(tooltipnamestr)].fontsize.mobile,24);
+		
+		set(plugin[get(tooltipnamestr)].textshadow,1);
+		set(plugin[get(tooltipnamestr)].textshadowrange,6.0);
+		set(plugin[get(tooltipnamestr)].textshadowangle,90);
+		
+		//copy(plugin[get(tooltipnamestr)].html,scene[get(linkedscene)].title);
+		copy(plugin[get(tooltipnamestr)].html,tooltipvalue);
+		
+		set(plugin[get(tooltipnamestr)].enabled,true);
+	</action>
+	
+	<action name="onhotspotloadedhandler">
+
+		if(tooltipvalue, add_all_the_time_tooltip(););
+
+	</action>
+
+</krpano>
+	

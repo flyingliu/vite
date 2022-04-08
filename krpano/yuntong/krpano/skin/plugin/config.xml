@@ -1,0 +1,140 @@
+<krpano>
+    <!-- switch_starview="true" -->
+    <skin_settings showlog='false'
+                   logger_level="debug"
+                   switch_gyro="false"
+                   switch_music="true"
+                   switch_hotspot="true"
+                   switch_comment="true"
+                   switch_autorotate="true"
+    />
+    
+    <autorotate name="spin" enabled="false" waittime="3" accel="1.0" speed="5.0" horizon="0.0" tofov="90" />
+
+    <layer name="skin_loadingtext" keep="true" url="%SWFPATH%/plugins/textfield.swf" align="center" x="5" y="-5"
+           html="Loading..." visible="false" autoheight="true" background="false" border="false" enabled="false"
+           css="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:22px; font-style:italic;"
+           textshadow="2"/>
+
+    <!-- Skin  -->
+    <events name="skin_events" keep="true"
+            onxmlcomplete=""
+            onnewpano="set(events[skin_events].onnewpano, null); skin_startup();"
+            onnewscene="switchStarview();"
+            onremovepano="skin_showloading(false);"
+            onloadcomplete="skin_showloading(false);"
+    />
+
+
+
+    <plugin name="skin_gyro" keep="true" url="%SWFPATH%/plugins/gyro.js" devices="html5" enabled="false" camroll="true" friction="0" velastic="0"/>
+
+    <!-- Skin Actions -->
+
+    <action name="skin_startup">
+        <!-- log日志是否开启 -->
+        if(skin_settings.showlog == true,
+            showlog(true);
+        );
+    </action>
+
+    <action name="skin_load_scene">
+        loadscene(%1, null, MERGE, BLEND(.2));
+    </action>
+
+    <action name="skin_load_pano">
+        loadpano(%1, onstart=skin_load_scene(get(scene[0].name)), MERGE, ZOOMBLEND(1));
+    </action>
+
+    <action name="skin_showloading">
+        set(layer[skin_loadingtext].visible, %1);
+    </action>
+
+    <!-- 视角重设的方法，%1是view的name，%2是fov，%3fovmin，%4fovmax -->
+    <action name="viewreset" >
+        tween(view[%1].fov,%2);
+        set(view[%1].fovmin,%3);
+        set(view[%1].fovmax,%4);
+    </action>
+
+    <action name="switchStarview">
+      if(skin_settings.switch_starview,
+        copy(inithlookat,view.hlookat);
+        copy(initvlookat,view.vlookat);
+        copy(initfov,view.fov);
+        copy(initfovmax,view.fovmax);
+        set(view.stereographic,true);
+        set(view.fisheye,1.0);
+        set(view.fov,155);
+        set(view.fovmax,150);
+        set(view.hlookat,-60);
+        set(view.vlookat,77);
+        set(view.limitview,auto);
+        skin_view_littleplanet();
+        delayedcall(4.5, nomalview_onstart(get(inithlookat),get(initvlookat),get(initfov),get(initfovmax) ); );
+      )
+    </action>
+
+    <action name="nomalview_onstart">
+      tween(view.hlookat,%1,2.5,easeInOutQuad);
+      tween(view.vlookat,%2,2.5,easeInOutQuad);
+      tween(view.fov,%3,2.5,easeInOutQuad);
+      tween(view.fisheye,0.0,2.5,easeInOutQuad);
+      tween(view.fovmax,%4,2.5,easeInOutQuad);
+      set(display.flash10,on);
+      wait(2.5);
+    </action>
+
+    <!-- 动态热点的动作展示 -->
+    <action name="skin_hotspot_animate">
+        if(isgif == 1,
+          inc(frame,1,get(lastframe),0);
+          mul(ypos,frame,frameheight);
+          txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
+          delayedcall(get(name),get(frametime), skin_hotspot_animate());
+        );
+    </action>
+
+    <!-- 热点拖拽方法 -->
+    <action name="skin_hotspot_drag">
+        <![CDATA[
+		txtadd(label,'tooltip_',get(name));
+		if(%1 != dragging
+		,
+			spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery);
+			sub(drag_adjustx, mouse.stagex, hotspotcenterx);
+			sub(drag_adjusty, mouse.stagey, hotspotcentery);
+			skin_hotspot_drag(dragging);
+		,
+			if(plugin[get(label)].pressed OR pressed OR presse == true
+			,
+				sub(dx, mouse.stagex, drag_adjustx);
+				sub(dy, mouse.stagey, drag_adjusty);
+				screentosphere(dx, dy, ath, atv);
+				copy(print_ath, ath);
+				copy(print_atv, atv);
+				roundval(print_ath, 3);
+				roundval(print_atv, 3);
+				delayedcall(0,skin_hotspot_drag(dragging));
+				if(hotspot[get(name)].onmove2
+				,
+					callwith(hotspot[get(name)],onmove2);
+				);
+
+				onDefaultEvent(hotspot_onmousemove);
+			  );
+		);
+	]]>
+    </action>
+
+    <action name="onDefaultEvent">
+        if(%1 != null
+        ,
+        if(skin_settings.%1
+        ,
+        copy(hotspot[get(name)].%1, skin_settings.%1);
+        callwith(hotspot[get(name)], %1);
+        );
+        );
+    </action>
+</krpano>
