@@ -23,3 +23,51 @@ export const sortBy = (attr, rev) => {
     return 0
   }
 }
+
+export class Cache {
+
+  constructor (vm, option = {}) {
+    this.option = option
+
+    this.cache = new Map()
+
+    this.vm = vm
+  }
+
+  hash (para) {
+    return JSON.stringify(para)
+  }
+
+  api (fetchName, para) {
+    const cacheName = fetchName + this.hash(para)
+
+    return new Promise((resole, reject) => {
+
+      if (this.cache.has(cacheName)) {
+        return resole({data: this.cache.get(cacheName)})
+      }
+
+      if (!this.option.api) {
+        console.error('请传入api对象')
+
+        return
+      } else if (typeof this.option.api[fetchName] === 'function') {
+        this.option.api[fetchName](para).then(res => {
+          if(res.code === 200) {
+            this.cache.set(cacheName, res.data)
+            return resole({ data: res.data})
+          } else {
+            this.vm.$message(res.msg)
+            return reject({ data: res})
+          }
+        }).catch(err => {
+
+          console.error(err)
+
+          return reject(err)
+        })
+      }
+    })
+  }
+
+}

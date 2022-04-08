@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.31/vue.global.prod.min.js"></script>
+
+  <title>钱柜</title>
+  <style>
+    html,
+    body,
+    h1,
+    h3,
+    dl,
+    dd,
+    li,
+    ul {
+      padding: 0;
+      margin: 0;
+      font: 14px/1.8 arial;
+      list-style: none;
+    }
+
+    body {
+      background: #efefef;
+    }
+
+    .dl {
+      padding: 10px;
+
+    }
+
+    .dd {
+      border: 1px solid #eee;
+      display: flex;
+      flex-flow: column nowrap;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, .1);
+    }
+
+    .title {
+      display: flex;
+      flex-flow: row nowrap;
+
+    }
+
+    .btn {
+      background: orangered;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+
+    .basic {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0 8px 0;
+      border-bottom: 1px solid rgba(100, 100, 100, .1);
+
+    }
+
+    .tt {
+      font: 16px/1 arial;
+      color: #333;
+      padding: 0 0 5px 0;
+    }
+
+    .subtt {
+      font: 14px/1 arial;
+      color: #666;
+    }
+
+    .more {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      font: 12px/1.5 arial;
+      color: #999;
+      text-align: center;
+      padding: 10px 0 0 0;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      margin-right: 10px;
+      ;
+    }
+
+    .b {
+      color:orangered;
+      font-weight: bold;
+    }
+
+    .maintitle {
+      padding: 10px;
+      font: bold 16px/1.5 arial;
+      color: #fff;
+      border-bottom: 1px solid #eee;
+      background: #333;
+
+    }
+
+    .sub { font: 12px/2 arial;  color:#999; border-top: 1px solid #ddd; padding: 5px; text-align: center; margin: 0 10px;}
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h1 class="maintitle">爆款推荐</h1>
+    <dl class="dl">
+      <dd class="dd" v-for="item in list" @click="link(item)">
+        <div class="basic">
+
+          <div class="title">
+            <image :src="item.logo" class="logo" />
+            <div class="t">
+              <h3 class="tt">{{item.title}}</h3>
+              <span class="subtt">{{item.subtitle}}</span>
+            </div>
+          </div>
+          <div class="btn">
+            立即领钱
+          </div>
+        </div>
+
+        <ul class="more">
+          <li>
+            <div class="num b" >{{item.detail.num}}</div>
+            <label for="">额度</label>
+          </li>
+          <li>
+            <div class="success b">{{item.detail.success}}</div>
+            <label for="">成功下款</label>
+          </li>
+          <li>
+            <div class="tong b">
+              {{item.detail.tong}}
+            </div>
+            <label for="">通过率</label>
+          </li>
+
+        </ul>
+      </dd>
+    </dl>
+    <p class="sub">任何前期收费的贷款都是诈骗，请勿支付</p>
+  </div>
+  <script>
+    const app = {
+      data () {
+        return {
+          list: [
+            {
+              title: '小财神',
+              subtitle: '仅凭身份证即可领取',
+              url: 'http://p232.cn/k2',
+              logo: './temp/cai.jpeg',
+              detail: {
+                num: '20,000',
+                success: '934,823',
+                tong: '95%'
+              }
+            },
+            {
+              title: '多宝鱼',
+              subtitle: '极速审核，极速下款！',
+              url: 'http://p232.cn/5w',
+              logo: './temp/duo.jpeg',
+              detail: {
+                num: '80,000',
+                success: '134,211',
+                tong: '92%'
+              }
+            }
+          ]
+        }
+      },
+      methods: {
+        link (item) {
+          console.log('33')
+          window.location.href = item.url
+        }
+      },
+    }
+
+    Vue.createApp(app).mount('#app')
+
+
+  </script>
+</body>
+
+</html>

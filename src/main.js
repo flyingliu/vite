@@ -8,6 +8,12 @@ import router from './router'
 const app = createApp(App)
 app.use(ElementPlus)
 app.use(router)
+app.config.globalProperties = {
+  $message: (msg) => {
+    console.log('%c [ msg ]-13', 'font-size:13px; background:pink; color:#bf2c9f;', msg)
+
+  }
+}
 app.component('button-counter', {
   data() {
     return {
