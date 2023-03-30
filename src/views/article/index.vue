@@ -78,8 +78,6 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { getFontName, familyList } from '/@/assets/js/util'
-import fInput from '/@/components/f-input.vue'
 import fTd from '/@/components/f-td.vue'
 import { ref, reactive, computed } from 'vue'
 import sFonts from '/@/components/s-fonts.vue'
@@ -91,32 +89,9 @@ const content = `  庆历四年春，滕子京谪守巴陵郡。越明年，政�
 嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲，居庙堂之高则忧其民，处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎！噫！微斯人，吾谁与归？
 时六年九月十五日。`
 
-const changeCon = () => {
-  console.log('v')
-}
-
 const print = () => {
   window.print()
 }
-
-
-
-
-const family = reactive({
-  familylist: familyList.map((item) => {
-    return typeof item === 'string'
-      ? {
-          label: getFontName(item),
-          value: item,
-          isLoad: false,
-        }
-      : item
-  }),
-  curr: {},
-})
-
-
-
 
 const formatStr = (val, col) => {
   const Arr = ['。', '，', '”', '》', '！', '？', ',', '.', '?', '!']

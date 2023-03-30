@@ -30,11 +30,10 @@
 </template>
 
 <script setup>
-import { reactive, onMounted,defineProps } from 'vue'
+import { reactive, onMounted } from 'vue'
 import { getFontName, familyList } from '/@/assets/js/util'
 
 const props = defineProps(['state'])
-console.log('%c [ props ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', props.state)
 
 const family = reactive({
   isComputerFontsLoads: false,
