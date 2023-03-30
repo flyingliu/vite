@@ -38,34 +38,8 @@
             :autosize="{ minRows: 4, maxRows: 6 }"
           ></el-input>
         </el-form-item>
-        <el-form-item label="字体设置">
-          <div class="cc">
-            <el-select
-              placeholder="please select your zone"
-              @change="selectData"
-              v-model="styleObj.fontFamily"
-              size="small"
-            >
-              <el-option
-                v-for="item in family.familylist"
-                :value="item.value"
-                :label="item.label"
-              ></el-option>
-            </el-select>
-            <el-upload
-              class="upload-demo"
-              action="#"
-              :on-change="handleChange"
-              :http-request="() => {}"
-              :file-list="[]"
-              :show-file-list="false"
-            >
-              <el-button size="small" type="primary" plain
-                >加载本地字体</el-button
-              >
-            </el-upload>
-          </div>
-        </el-form-item>
+
+        <s-fonts ref="sFonts" :state="styleObj"></s-fonts>
 
         <el-form-item label="列数设置：">
           <el-slider v-model="col" :max="25" :min="3"></el-slider>
@@ -108,10 +82,8 @@ import { getFontName, familyList } from '/@/assets/js/util'
 import fInput from '/@/components/f-input.vue'
 import fTd from '/@/components/f-td.vue'
 import { ref, reactive, computed } from 'vue'
-
+import sFonts from '/@/components/s-fonts.vue'
 const SCALE = 0.72
-
-
 const content = `  庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。
 予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯，朝晖夕阴，气象万千，此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？
 若夫淫雨霏霏，连月不开，阴风怒号，浊浪排空，日星隐曜，山岳潜形，商旅不行，樯倾楫摧，薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。
@@ -129,16 +101,6 @@ const print = () => {
 
 
 
-const handleChange = (file) => {
-  console.log('+++', file)
-  const url = window.URL.createObjectURL(file.raw)
-  const label = getFontName(file.name)
-  const list = family.familylist
-  if (list.find((v) => v.label != label)) {
-    list.push({ value: url, label })
-  }
-  loadFonts(list.find((v) => v.label == label))
-}
 
 const family = reactive({
   familylist: familyList.map((item) => {
@@ -146,33 +108,15 @@ const family = reactive({
       ? {
           label: getFontName(item),
           value: item,
+          isLoad: false,
         }
       : item
   }),
   curr: {},
 })
 
-const selectData = (v) => {
-  family.curr = family.familylist.find((item) => item.value === v) || {}
-  console.log(v, family.curr)
-  loadFonts(family.curr)
-}
 
-function loadFonts(obj = {}) {
-  const fonts = document.fonts
-  const font = new FontFace(obj.label, 'url(' + obj.value + ')')
-  font
-    .load()
-    .then((res) => {
-      fonts.add(font)
-      styleObj.fontFamily = obj.label
-      family.curr = obj
-    })
-    .catch((err) => {
-      alert('字体加载错误！')
-      console.error(err)
-    })
-}
+
 
 const formatStr = (val, col) => {
   const Arr = ['。', '，', '”', '》', '！', '？', ',', '.', '?', '!']
@@ -239,7 +183,7 @@ const abc = computed(() => {
   row.value = Math.floor(PAGEHEIGHT / (itemWidth * 2 + GAP))
   styleObj.gridTemplateRows =
     'repeat(' + row.value + ', ' + itemWidth * 2 + 'cm)'
-  styleObj.font = itemWidth * SCALE + 'cm/' + itemWidth + 'cm arial'
+  styleObj.font = itemWidth * SCALE + 'cm/' + itemWidth + 'cm ' + styleObj.fontFamily
   styleObj.itemWidth = itemWidth
   styleObj.color = data.colorFont
   styleObj.borderColor = data.color
@@ -250,12 +194,12 @@ const styleObj = reactive({
   gridTemplateColumns: 'repeat(5, 20%)',
   gridTemplateRows: 'repeat(4, 25%)',
   font: '',
+  fontFamily: 'arial',
   itemWidth: '',
   color: '',
   borderColor: ''
 })
 
-loadFonts(family.familylist[0])
 
 
 </script>
