@@ -29,7 +29,6 @@
     <el-form-item label="其他设置：">
       <div class="oset">
         <el-color-picker
-          title="背景色"
           v-model="state.color"
           show-alpha
           :predefine="predefineColors"
@@ -37,7 +36,6 @@
         ></el-color-picker>
 
         <el-color-picker
-          title="字体颜色"
           v-model="state.colorFont"
           show-alpha
           :predefine="predefineColors"

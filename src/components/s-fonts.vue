@@ -59,6 +59,7 @@ function isChinese(str) {
 
 async function initComputerFonts() {
   const fonts = await queryLocalFonts()
+  console.log('%c [ fonts ]-62', 'font-size:13px; background:pink; color:#bf2c9f;', fonts)
   if(fonts.length) {
     family.isComputerFontsLoads = true
     const ff = fonts.filter(v=>isChinese(v.fullName))
