@@ -15,32 +15,9 @@
       ></el-input>
     </el-form-item>
 
-    <el-form-item label="字体设置">
-      <div class="cc">
-        <el-select
-          placeholder="please select your zone"
-          @change="selectData"
-          v-model="state.font"
-          size="small"
-        >
-          <el-option
-            v-for="item in family.familylist"
-            :value="item.value"
-            :label="item.label"
-          ></el-option>
-        </el-select>
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="addLocalFont"
-          :http-request="() => {}"
-          :file-list="[]"
-          :show-file-list="false"
-        >
-          <el-button size="small" type="primary" plain>加载本地字体</el-button>
-        </el-upload>
-      </div>
-    </el-form-item>
+
+
+    <s-fonts ref="sFonts" :state="state"></s-fonts>
 
     <el-form-item label="单元格尺寸：">
       <el-slider
@@ -62,7 +39,6 @@
     <el-form-item label="其他设置：">
       <div class="oset">
         <el-color-picker
-          title="背景色"
           v-model="state.color"
           show-alpha
           :predefine="predefineColors"
@@ -70,7 +46,6 @@
         ></el-color-picker>
 
         <el-color-picker
-          title="字体颜色"
           v-model="state.colorFont"
           show-alpha
           :predefine="predefineColors"
@@ -85,54 +60,16 @@
 </template>
 
 <script setup>
-import { getFontName, familyList } from '/@/assets/js/util'
 import { reactive, toRefs, ref, computed } from 'vue'
+import sFonts from '/@/components/s-fonts.vue'
+
 
 const SCALE = 0.72
-
-const family = reactive({
-  familylist: familyList.map((item) => {
-    return typeof item === 'string'
-      ? { label: getFontName(item), value: item }
-      : item
-  }),
-})
-
-const selectData = (v) => {
-  const curr = family.familylist.find((item) => item.value === v)
-  curr && loadFonts(curr)
-}
-
-const addLocalFont = (file) => {
-  const url = window.URL.createObjectURL(file.raw)
-  const label = getFontName(file.name)
-  const list = family.familylist
-  if (list.find((v) => v.label != label)) {
-    list.push({ value: url, label })
-  }
-  loadFonts(list.find((v) => v.label == label))
-}
-
-function loadFonts(obj = {}) {
-  const fonts = document.fonts
-  const font = new FontFace(obj.label, 'url(' + obj.value + ')')
-  font
-    .load()
-    .then((res) => {
-      fonts.add(font)
-      state.font = obj.label
-      return obj
-    })
-    .catch((err) => {
-      alert('字体加载错误！')
-      console.error(err)
-    })
-}
 
 const styleObj = computed(() => ({
   gridTemplateColumns: 'repeat(' + (state.col + 1) + ', ' + state.size + 'cm)',
   gridTemplateRows: 'repeat(' + state.row + ', ' + state.size + 'cm)',
-  font: state.size * SCALE + 'cm/' + state.size + 'cm ' + state.font,
+  font: state.size * SCALE + 'cm/' + state.size + 'cm \'' + state.fontFamily,
 }))
 
 const lastItem = computed(() => ({
@@ -171,6 +108,7 @@ const state = reactive({
   col: 4,
   size: 1.6,
   font: '',
+  fontFamily: '',
   color: '#666',
   colorFont: '#000',
   class: '',
@@ -185,7 +123,7 @@ const fn = () => emit('getGrid', state)
 const print = () => window.print()
 
 const init = () => {
-  loadFonts(family.familylist[0])
+ 
   fn()
 }
 

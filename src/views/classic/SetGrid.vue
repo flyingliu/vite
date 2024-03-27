@@ -21,39 +21,14 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item label="字体设置">
-      <div class="cc">
-        <el-select
-          placeholder="please select your zone"
-          @change="selectData"
-          v-model="state.font"
-          size="small"
-        >
-          <el-option
-            v-for="item in family.familylist"
-            :value="item.value"
-            :label="item.label"
-          ></el-option>
-        </el-select>
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="addLocalFont"
-          :http-request="() => {}"
-          :file-list="[]"
-          :show-file-list="false"
-        >
-          <el-button size="small" type="primary" plain>加载本地字体</el-button>
-        </el-upload>
-      </div>
-    </el-form-item>
+    <s-fonts ref="sFonts" :state="state"></s-fonts>
+
     <el-form-item label="列数：">
       <el-slider v-model="state.col" :max="25" :min="3"></el-slider>
     </el-form-item>
     <el-form-item label="其他设置：">
       <div class="oset">
         <el-color-picker
-          title="背景色"
           v-model="state.color"
           show-alpha
           :predefine="predefineColors"
@@ -61,7 +36,6 @@
         ></el-color-picker>
 
         <el-color-picker
-          title="字体颜色"
           v-model="state.colorFont"
           show-alpha
           :predefine="predefineColors"
@@ -100,10 +74,10 @@
 </template>
 
 <script setup>
-import { getFontName, familyList } from '/@/assets/js/util'
-
 import { reactive, toRefs, ref, computed } from 'vue'
 import list from '/@/assets/js/shengzi'
+import sFonts from '/@/components/s-fonts.vue'
+
 
 const contentList = Object.keys(list).map((key) => ({
   label: key,
@@ -115,55 +89,17 @@ const PAGEHEIGHT = 26
 const GAP = 0.2
 const SCALE = 0.75
 
-const family = reactive({
-  familylist: familyList.map((item) => {
-    return typeof item === 'string'
-      ? {
-          label: getFontName(item),
-          value: item,
-        }
-      : item
-  }),
-})
-
-const selectData = (v) => {
-  const curr = family.familylist.find((item) => item.value === v)
-  curr && loadFonts(curr)
-}
 
 const currCon = ref('古诗二首')
 const selectContent = (v) => {
   mycon.value = list[v]
 }
 
-const addLocalFont = (file) => {
-  const url = window.URL.createObjectURL(file.raw)
-  const label = getFontName(file.name)
-  const list = family.familylist
-  if (list.find((v) => v.label != label)) {
-    list.push({ value: url, label })
-  }
-  loadFonts(list.find((v) => v.label == label))
-}
 
-function loadFonts(obj = {}) {
-  const fonts = document.fonts
-  const font = new FontFace(obj.label, 'url(' + obj.value + ')')
-  font
-    .load()
-    .then((res) => {
-      fonts.add(font)
-      state.font = obj.label
-      return obj
-    })
-    .catch((err) => {
-      alert('字体加载错误！')
-      console.error(err)
-    })
-}
+
 
 const styleObj = computed(() => ({
-  font: state.size * SCALE + 'cm/' + state.size + 'cm ' + state.font,
+  font: state.size * SCALE + 'cm/' + state.size + 'cm ' + state.fontFamily,
 }))
 
 const item = computed(() => ({
@@ -207,6 +143,7 @@ const state = reactive({
   row,
   size,
   font: '',
+  fontFamily: '',
   styleObj,
   item,
   color: '#e00',
@@ -217,9 +154,6 @@ const state = reactive({
 
 const print = () => window.print()
 
-const init = () => {
-  loadFonts(family.familylist[0])
-}
 
 const predefineColors = ref([
   '#e00',
@@ -258,7 +192,7 @@ defineExpose({
   state,
 })
 
-init()
+
 </script>
 
 <style class="scss" scoped>
