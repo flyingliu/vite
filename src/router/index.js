@@ -32,6 +32,11 @@ const routes = [
     component: () => import('../views/demo/index.vue')
   },
   {
+    path: '/web',
+    name: 'web',
+    component: () => import('../views/web/index.vue')
+  },
+  {
     path: '/pano',
     name: 'pano',
     component: () => import('../views/pano/index.vue')
