@@ -41,11 +41,11 @@ const routes = [
     name: 'pano',
     component: () => import('../views/pano/index.vue')
   },
-  // {
-  //   path: '/imglist',
-  //   name: 'imglist',
-  //   component: () => import('../views/imglist/index.vue')
-  // }
+  {
+    path: '/imglist',
+    name: 'imglist',
+    component: () => import('../views/imglist/index.vue')
+  }
 ]
 
 const router = createRouter({
