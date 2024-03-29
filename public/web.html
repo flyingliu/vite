@@ -1,0 +1,179 @@
+<style>
+  body,
+  html {
+    padding: 0;
+    margin: 0;
+  }
+</style>
+
+<img-list id="imgList" list="145_而.jpg,146_终.jpg,147_之.jpg,148_始.jpg,149_难.jpg" selected="0"></img-list>
+
+
+<script>
+  (function () {
+    'use strict';
+
+    // Feature detect
+    if (!(window.customElements && document.body.attachShadow)) {
+      document.querySelector('fancy-tabs').innerHTML =
+        "<b>Your browser doesn't support Shadow DOM and Custom Elements v1.</b>";
+      return;
+    }
+
+    // See https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
+
+    customElements.define(
+      'img-list',
+      class extends HTMLElement {
+        #shadowRoot;
+        #viewImg;
+        #selected;
+        #boundOnTitleClick;
+        #boundOnKeyDown;
+        tabs = [];
+
+        static get observedAttributes () {
+          return ['selected', 'list']
+        }
+
+        constructor () {
+          super(); // always call super() first in the ctor.
+
+          // Create shadow DOM for the component.
+          this.#shadowRoot = this.attachShadow({ mode: 'open' });
+
+        }
+
+        get list () {
+          return this._list
+        }
+        set list (v) {
+          this.setAttribute('list', v)
+        }
+
+
+        get selected () {
+          return this.#selected;
+        }
+
+        set selected (idx) {
+          this.#selected = idx;
+          this.selectTab(idx);
+
+          // Updated the element's selected attribute value when
+          // backing property changes.
+          this.setAttribute('selected', idx);
+        }
+
+        connectedCallback () {
+
+          // console.log('自定义元素加入页面', this._list)
+          const baseUrl = '//qiniu.easywe.net/shufa/yanzhenqing/zhengzuowei/'
+          const $li = this._list
+            .split(',')
+            .map((li) => `<li class="itemwrap"><img class="item" src="${baseUrl+li}-small" alt="${baseUrl+li}" /></li>`)
+            .join('')
+
+
+          this.#shadowRoot.innerHTML =  /*san*/`
+            <div class="imgbox">
+              <div class="title"><slot></slot></div>
+              <ul class="imgul">${$li}</ul>
+              <hr></hr>
+              <div><img id="viewImg" src="" /></div>
+            </div>
+            <style>
+              .imgbox .title { font:bold 14px arial; padding: 10px 0;}
+              .imgul, .imgul li { padding:0; margin: 0; list-style:none;}
+              .imgul { display: flex; flex-flow: row wrap;}
+              .imgul li {}
+              .imgul li img { border:2px solid #ccc; display:block; width:36px;height:36px; object-fit:cover}
+              .imgul img[aria-selected="true"]{ border:2px solid #900; }
+            </style>
+          `;
+          this.setAttribute('role', 'tablist');
+
+          this.tabs = Array.from(this.#shadowRoot.querySelectorAll('.item'))
+          this.#viewImg = this.#shadowRoot.querySelector('#viewImg')
+
+          // Referernces to we can remove listeners later.
+          this.#boundOnTitleClick = this.#onTitleClick.bind(this);
+          this.#boundOnKeyDown = this.#onKeyDown.bind(this);
+
+          for (let tab of this.tabs) {
+            tab.addEventListener('click', this.#boundOnTitleClick);
+            tab.addEventListener('keydown', this.#boundOnKeyDown);
+          }
+
+
+          this.selected = this.#findFirstSelectedTab() || 0;
+        }
+
+        attributeChangedCallback (name, oldValue, newValue) {
+          console.log('自定义元素属性发生变化')
+          if (name === 'rows') {
+            this._rows = newValue
+            // 执行渲染更新
+            this._updateRendering()
+          } else if (name === 'list') {
+            this._list = newValue
+          }
+        }
+        disconnectedCallback () {
+          // this.#tabsSlot.removeEventListener('click', this.#boundOnTitleClick);
+          // this.#tabsSlot.removeEventListener('keydown', this.#boundOnKeyDown);
+        }
+
+        #onTitleClick (e) {
+          
+          this.selected = this.tabs.indexOf(e.target);
+          console.log('eee', this.tabs,e.target)
+        }
+
+        #onKeyDown (e) {
+          switch (e.code) {
+            case 'ArrowUp':
+            case 'ArrowLeft':
+              e.preventDefault();
+              var idx = this.selected - 1;
+              idx = idx < 0 ? this.tabs.length - 1 : idx;
+              this.tabs[idx].click();
+              break;
+            case 'ArrowDown':
+            case 'ArrowRight':
+              e.preventDefault();
+              var idx = this.selected + 1;
+              this.tabs[idx % this.tabs.length].click();
+              break;
+            default:
+              break;
+          }
+        }
+
+        #findFirstSelectedTab () {
+          let selectedIdx;
+          for (let [i, tab] of this.tabs.entries()) {
+            tab.setAttribute('role', 'tab');
+
+            // Allow users to declaratively select a tab
+            // Highlight last tab which has the selected attribute.
+            if (tab.hasAttribute('selected')) {
+              selectedIdx = i;
+            }
+          }
+          return selectedIdx;
+        }
+
+        selectTab (idx = null) {
+          for (let [i, tab] of this.tabs.entries()) {
+            const select = i === idx;
+            tab.setAttribute('tabindex', select ? 0 : -1);
+            tab.setAttribute('aria-selected', select);
+            
+            this.#viewImg.src = this.tabs[idx].alt
+          }
+        }
+      }
+    );
+  })();
+</script>
