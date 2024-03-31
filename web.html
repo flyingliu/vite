@@ -6,9 +6,9 @@
   }
 </style>
 
-<img-list id="imgList" list="145_而.jpg,146_终.jpg,147_之.jpg,148_始.jpg,149_难.jpg" selected="0"></img-list>
+<img-list id="imgList" list="145_而.jpg,146_终.jpg" selected="1"></img-list>
 
-
+<script src="./data/zzwt.js"></script>
 <script>
   (function () {
     'use strict';
@@ -19,6 +19,8 @@
         "<b>Your browser doesn't support Shadow DOM and Custom Elements v1.</b>";
       return;
     }
+
+
 
     // See https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
 
@@ -59,65 +61,23 @@
         set selected (idx) {
           this.#selected = idx;
           this.selectTab(idx);
-
-          // Updated the element's selected attribute value when
-          // backing property changes.
-          this.setAttribute('selected', idx);
         }
 
         connectedCallback () {
 
-          // console.log('自定义元素加入页面', this._list)
-          const baseUrl = '//qiniu.easywe.net/shufa/yanzhenqing/zhengzuowei/'
-          const $li = this._list
-            .split(',')
-            .map((li) => `<li class="itemwrap"><img class="item" src="${baseUrl+li}-small" alt="${baseUrl+li}" /></li>`)
-            .join('')
-
-
-          this.#shadowRoot.innerHTML =  /*san*/`
-            <div class="imgbox">
-              <div class="title"><slot></slot></div>
-              <ul class="imgul">${$li}</ul>
-              <hr></hr>
-              <div><img id="viewImg" src="" /></div>
-            </div>
-            <style>
-              .imgbox .title { font:bold 14px arial; padding: 10px 0;}
-              .imgul, .imgul li { padding:0; margin: 0; list-style:none;}
-              .imgul { display: flex; flex-flow: row wrap;}
-              .imgul li {}
-              .imgul li img { border:2px solid #ccc; display:block; width:36px;height:36px; object-fit:cover}
-              .imgul img[aria-selected="true"]{ border:2px solid #900; }
-            </style>
-          `;
-          this.setAttribute('role', 'tablist');
-
-          this.tabs = Array.from(this.#shadowRoot.querySelectorAll('.item'))
-          this.#viewImg = this.#shadowRoot.querySelector('#viewImg')
-
-          // Referernces to we can remove listeners later.
-          this.#boundOnTitleClick = this.#onTitleClick.bind(this);
-          this.#boundOnKeyDown = this.#onKeyDown.bind(this);
-
-          for (let tab of this.tabs) {
-            tab.addEventListener('click', this.#boundOnTitleClick);
-            tab.addEventListener('keydown', this.#boundOnKeyDown);
-          }
-
-
-          this.selected = this.#findFirstSelectedTab() || 0;
+          this._updateRendering()
         }
 
         attributeChangedCallback (name, oldValue, newValue) {
-          console.log('自定义元素属性发生变化')
-          if (name === 'rows') {
-            this._rows = newValue
-            // 执行渲染更新
-            this._updateRendering()
-          } else if (name === 'list') {
-            this._list = newValue
+          console.log('自定义元素属性发生变化', name, oldValue, newValue)
+          const keys = {
+            selected: () => this.selected = newValue,
+            list: () => {
+              this._list = newValue
+              this._updateRendering()
+            }
           }
+          keys[name]?.()
         }
         disconnectedCallback () {
           // this.#tabsSlot.removeEventListener('click', this.#boundOnTitleClick);
@@ -125,9 +85,7 @@
         }
 
         #onTitleClick (e) {
-          
           this.selected = this.tabs.indexOf(e.target);
-          console.log('eee', this.tabs,e.target)
         }
 
         #onKeyDown (e) {
@@ -150,30 +108,122 @@
           }
         }
 
-        #findFirstSelectedTab () {
-          let selectedIdx;
-          for (let [i, tab] of this.tabs.entries()) {
-            tab.setAttribute('role', 'tab');
+        _updateRendering () {
+          // console.log('自定义元素加入页面', this._list)
+          const baseUrl = '//qiniu.easywe.net/shufa/yanzhenqing/zhengzuowei/'
+          const $li = this._list
+            .split(',')
+            .map((li) => `<img class="item" src="${baseUrl + li}-small" alt="${baseUrl + li}" />`)
+            .join('')
 
-            // Allow users to declaratively select a tab
-            // Highlight last tab which has the selected attribute.
-            if (tab.hasAttribute('selected')) {
-              selectedIdx = i;
-            }
+
+          this.#shadowRoot.innerHTML =  /*san*/`
+            <div class="imgbox">
+              <main><img id="viewImg" src="" /></main>
+              <aside id="aside" class="">
+                <dl>
+                  <dd id="toggle">🍊</dd>
+                  <dd>🍎</dd>
+                  <dd>🥑</dd>
+                  <dd>🍄</dd>
+                </dl>
+                <div class="title"><slot></slot></div>
+                <div class="imgul">${$li}</div>
+              </aside>
+            </div>
+            <style>
+              .imgbox {
+                display: flex; flex-flow: row nowrap;
+                aside {
+                  position: relative;
+                  background: #ccc;
+                  width: 20%; 
+                  display: flex; 
+                  height:100vh; 
+                  overflow: auto;
+                  padding: 0 0 0 24px;
+                  &.side {
+                    position: absolute;
+                    right: -20%;
+                  }
+                  dl {
+                    position: absolute;
+                    left: 0px;
+                    width: 20px;
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                    flex-flow: column nowrap;
+                    dd { 
+                      text-align: center;
+                      width:20px; 
+                      height:20px; 
+                      border-radius: 50%; 
+                      padding:0; 
+                      margin:10px 0;
+                      cursor: pointer;
+                    }
+                  }
+                }
+                main { 
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                  flex: auto;
+                }
+              }
+              .imgbox .title { font:bold 14px arial; padding: 10px 0;}
+              .imgul { display: flex; flex-flow: row wrap;align-content: flex-start;}
+              .imgul {}
+              .imgul img { border:2px solid #ccc; display:block; width:36px;height:36px; object-fit:cover;}
+              .imgul img[aria-selected="true"]{ border:2px solid #900; }
+            </style>
+          `;
+          this.setAttribute('role', 'tablist');
+
+          this.tabs = Array.from(this.#shadowRoot.querySelectorAll('.item'))
+          this.#viewImg = this.#shadowRoot.querySelector('#viewImg')
+
+          // Referernces to we can remove listeners later.
+          this.#boundOnTitleClick = this.#onTitleClick.bind(this);
+          this.#boundOnKeyDown = this.#onKeyDown.bind(this);
+
+          for (let tab of this.tabs) {
+            tab.addEventListener('click', this.#boundOnTitleClick);
+            tab.addEventListener('keydown', this.#boundOnKeyDown);
           }
-          return selectedIdx;
+
+          const toggle = this.#shadowRoot.querySelector('#toggle')
+          toggle.addEventListener('click', () => {
+            this.#shadowRoot.querySelector('aside').classList.toggle('side')
+          })
+
+          this.selectTab(this.selected)
         }
 
         selectTab (idx = null) {
+          console.log('index', idx)
           for (let [i, tab] of this.tabs.entries()) {
-            const select = i === idx;
+            const select = i === +idx;
             tab.setAttribute('tabindex', select ? 0 : -1);
             tab.setAttribute('aria-selected', select);
-            
-            this.#viewImg.src = this.tabs[idx].alt
+            this.#viewImg.src = this.tabs[idx]?.alt
           }
         }
       }
     );
+
+
+
+    const imgList = document.getElementById('imgList')
+    imgList.list = zhengzuowei.toString()
+    // let index = 0
+    // setInterval(() => {
+    //   imgList.setAttribute('selected',index) 
+    //   index++
+    // }, 1000);
+
+
   })();
 </script>
