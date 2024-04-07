@@ -1,0 +1,112 @@
+<style>
+  body,
+  html {
+    padding: 0;
+    margin: 0;
+  }
+</style>
+
+<img-dict source="我"></img-dict>
+
+<script>
+  (function () {
+    'use strict';
+
+    // Feature detect
+    if (!(window.customElements && document.body.attachShadow)) {
+      document.querySelector('fancy-tabs').innerHTML =
+        "<b>Your browser doesn't support Shadow DOM and Custom Elements v1.</b>";
+      return;
+    }
+
+
+
+    // See https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
+
+    customElements.define(
+      'img-dict',
+      class extends HTMLElement {
+        #shadowRoot;
+        #viewImg;
+        #selected;
+        #boundOnTitleClick;
+        #boundOnKeyDown;
+        tabs = [];
+
+        static get observedAttributes () {
+          return ['source', 'list']
+        }
+
+        constructor () {
+          super(); // always call super() first in the ctor.
+
+          // Create shadow DOM for the component.
+          this.#shadowRoot = this.attachShadow({ mode: 'open' });
+
+        }
+
+        get source () {
+          return this._source
+        }
+        set source (v) {
+          this.setAttribute('source', v)
+        }
+
+        connectedCallback () {
+          this._updateRendering()
+        }
+
+        attributeChangedCallback (name, oldValue, newValue) {
+          console.log('自定义元素属性发生变化', name, oldValue, newValue)
+          const keys = {
+            source: () => {
+              this._source = newValue
+              this._updateRendering()
+            }
+          }
+          keys[name]?.()
+        }
+        disconnectedCallback () {
+          // this.#tabsSlot.removeEventListener('click', this.#boundOnTitleClick);
+          // this.#tabsSlot.removeEventListener('keydown', this.#boundOnKeyDown);
+        }
+
+
+      getHanZiUnicodeHex (hanzi) {
+        const unicode = hanzi.charCodeAt(0);
+        return unicode.toString(16).toLocaleUpperCase();
+      }
+ 
+    // https://img.zdic.net/kai/jbh/4E2D.gif
+    // https://img.zdic.net/kai/cn/4E2D.svg
+        
+        _updateRendering () {
+          // console.log('自定义元素加入页面', this._list)
+          const code = this.getHanZiUnicodeHex(this.source)
+          const actionImg = `https://img.zdic.net/kai/jbh/${code}.gif`
+          const staticImg = `https://img.zdic.net/kai/cn/${code}.svg`
+          
+          this.#shadowRoot.innerHTML =  /*san*/`
+            <div class="imgbox">
+              <main>
+                <img id="static" src="${staticImg}" />
+                <img id="action" src="${actionImg}" />
+              </main>
+            </div>
+            <style>
+              @import "./css/web.css";
+            </style>
+          `;
+        }
+
+
+      }
+    );
+
+
+
+
+
+
+  })();
+</script>
