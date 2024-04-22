@@ -14,7 +14,7 @@
 
     // Feature detect
     if (!(window.customElements && document.body.attachShadow)) {
-      document.querySelector('fancy-tabs').innerHTML =
+      document.querySelector('img-dict').innerHTML =
         "<b>Your browser doesn't support Shadow DOM and Custom Elements v1.</b>";
       return;
     }
@@ -53,7 +53,7 @@
         }
 
         connectedCallback () {
-          this._updateRendering()
+          // this._updateRendering()
         }
 
         attributeChangedCallback (name, oldValue, newValue) {
@@ -72,33 +72,42 @@
         }
 
 
-      getHanZiUnicodeHex (hanzi) {
-        const unicode = hanzi.charCodeAt(0);
-        return unicode.toString(16).toLocaleUpperCase();
-      }
- 
-    // https://img.zdic.net/kai/jbh/4E2D.gif
-    // https://img.zdic.net/kai/cn/4E2D.svg
-        
-        _updateRendering () {
+        async fetchData (url) {
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data
+          } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+          }
+        }
+        async _updateRendering () {
           // console.log('自定义元素加入页面', this._list)
-          const code = this.getHanZiUnicodeHex(this.source)
-          const actionImg = `https://img.zdic.net/kai/jbh/${code}.gif`
-          const staticImg = `https://img.zdic.net/kai/cn/${code}.svg`
-          
+          if(!this.source) return
+          const url = 'https://feather-h8pq.onrender.com/dict?name=' + this.source
+          const { actionUrl, staticUrl } = await this.fetchData(url)
+
           this.#shadowRoot.innerHTML =  /*san*/`
             <div class="imgbox">
-              <main>
-                <img id="static" src="${staticImg}" />
-                <img id="action" src="${actionImg}" />
-              </main>
+              <img id="static" src="${staticUrl}" />
+              <img id="action" src="${actionUrl}" />
             </div>
             <style>
-              @import "./css/web.css";
+              .imgbox { display: inline-block; }
+              .imgbox img { width: 10em; display:none;}
+              .imgbox.active #action {display:inline-block;}
+              .imgbox.active #static {display:none;}
+              .imgbox img#action { display:none; }
+              .imgbox img#static { display:inline-block; }
             </style>
           `;
-        }
 
+          // 切换侧边栏
+          const imgbox = this.#shadowRoot.querySelector('.imgbox')
+          imgbox.addEventListener('click', function (e) {
+            this.classList.toggle('active')
+          })
+        }
 
       }
     );

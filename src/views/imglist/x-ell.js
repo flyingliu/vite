@@ -51,7 +51,7 @@ class HTMLEllElement extends HTMLElement {
         .imgul, .imgul li { padding:0; margin: 0; list-style:none;}
         .imgul { display: flex; flex-flow: row wrap;}
         .imgul li {border:2px solid #fff;}
-        .imgul li img { display:block; width:36px;height:36px; object-fit:cover} 
+        .imgul li img { display:block; width:36px;height:36px; object-fit:cover; filter: invert(100%);} 
       </style>
     `
         this.shadow.querySelector('.imgul').addEventListener('click', (e) => {
