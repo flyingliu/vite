@@ -1,8 +1,9 @@
-import {createApp,h,resolveComponent} from 'vue'
+import { createApp, h, resolveComponent } from 'vue'
 import HereSpot from '../components/Here.js'
+import { Hotspots } from './hotspot.js'
 var hotspotArr = []
 var IMG = '/images/love.png'
-var TEMPLATE = '<div class="hotspotwrap"></div>'
+var TEMPLATE = '<div class="herewrap">bababa</div>'
 var currentHotspot = {}
 const DEFAULT_OPTION = {
   align: 'center',
@@ -14,27 +15,15 @@ const DEFAULT_OPTION = {
     onClick: function () {
       console.log('this onClick', this)
     },
-    onUp: function name(params) {
+    onUp: function name (params) {
       console.log('this onUp', this)
     },
     onLoaded: function () {
       hotspotArr.push(this)
       console.log('this onLoaded', this)
-
-      var element = this.element[0]
-      createApp(HereSpot).mount(element)
-      // this.vm = new Vue({
-      //   el: element,
-      //   data: {
-      //     filePath: config.filePath,
-      //     avatar: this.data.avatar,
-      //     type: this.data.type,
-      //     hotspotId: this.data.hotspotId,
-      //     hasFile: this.data.hasFile,
-      //     picFileThumb: this.data.picFileThumb,
-      //     picFileCount: this.data.picFileCount
-      //   }
-      // })
+      // 加载完成后挂在vue组件
+      // var element = this.element[0]
+      // createApp(HereSpot).mount(element)
     },
     onAddHotspot: function () {
       currentHotspot = this
@@ -44,27 +33,26 @@ const DEFAULT_OPTION = {
 }
 
 class Heres {
-  constructor(krpano,option = {}) {
-    this.option = {...DEFAULT_OPTION, ...option}
+  constructor (krpano, option = {}) {
+    this.option = { ...DEFAULT_OPTION, ...option }
     this.krpano = krpano
     this.init()
   }
 
   init (data) {
-    this.option.data = this.krpano.method.hotspot.finishDataList(data)
-    this.here = this.krpano.method.hotspot.register('here', this.option)
-
-    console.log('this.here',this.here)
+    const hotspot = new Hotspots(this.krpano, this.option)
+    this.option.data = hotspot.finishDataList(data)
+    this.here = hotspot.register('here', this.option)
   }
 
-  addHere(opt = {}) {
+  addHere (opt = {}) {
     this.here.addHotspot(opt)
   }
 
-  onnewscene() {
+  onnewscene () {
     console.log('this is on new scene')
   }
-
 }
 
-export {Heres}
+
+export { Heres }

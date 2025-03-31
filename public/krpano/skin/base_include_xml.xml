@@ -1,8 +1,9 @@
 <krpano>
-    <!-- <include url="%SWFPATH%/krpano/skin/applicationContext.xml"/>
+  <!-- <include url="%SWFPATH%/krpano/skin/applicationContext.xml"/>
     <include url="%SWFPATH%/krpano/skin/hotspot.xml"/>
     <include url="%SWFPATH%/krpano/skin/view.xml"/> -->
-    <!-- <include url="%BASEDIR%/getIconXml"/> -->
-    <!-- <include url="%SWFPATH%/krpano/skin/contextmenu.xml"/> -->
-    <include url="%SWFPATH%/krpano/skin/config.xml"/>
+  <!-- <include url="%BASEDIR%/getIconXml"/> -->
+  <!-- <include url="%SWFPATH%/krpano/skin/contextmenu.xml"/> -->
+  <include url="%SWFPATH%/krpano/skin/config.xml"/>
+  <include url="%SWFPATH%/krpano/skin/contextmenu.xml"/>
 </krpano>

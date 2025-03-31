@@ -1,9 +1,17 @@
-﻿<krpano>
+﻿<krpano showerrors="true">
+  <!-- <include url="%SWFPATH%/skin/plugin/contextmenu.xml"/>
+  <include url="%$URL%/getIconXml"/>
+  <include url="%SWFPATH%/skin/plugin/config.xml"/>
+  <plugin keep="true" url="%$CODEURL%/plugin.js"/> -->
+  <include url="%SWFPATH%/krpano/skin/base_include_xml.xml"/>
+  <style name="spot" url="%SWFPATH%/krpano/skin/waves.png" scale="0.25" zoom="true" />
+  <scene name="index" onstart="" autoload="true">
+    <preview type="grid(CUBE,16,16,512,0xCCCCCC,0xFFFFFF,0x999999);" />
+    <plugin name="hotspot_pos_info" type="text" html="drag the hotspots..." css="font-family:Courier;" padding="8" align="lefttop" x="10" y="10" width="200" enabled="false" />
+    <view hlookat="0" vlookat="0" fovtype="VFOV" fov="90" fovmin="30" fovmax="150" />
+  </scene>
 
-	<!-- grid preview pano -->
-	<preview type="grid(cube,64,64,512,0xCCCCCC,0xF6F6F6,0x999999);" />
-
-	<!-- view/fov settings -->
-	<view hlookat="0" vlookat="0" fovtype="VFOV" fov="90" fovmin="30" fovmax="150" />
-
+  <security cors="*">
+    <allowdomain domain="*" />
+  </security>
 </krpano>

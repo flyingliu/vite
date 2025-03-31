@@ -21,7 +21,6 @@ class Hotspots {
   register (hotspotType, opt = {}) {
     this.option = {...this.option, ...opt}
     const type =  register[hotspotType] ? register[hotspotType] : new RegisterHotspot(hotspotType, this.option, this.krpano)
-    
     return type
   }
 
@@ -166,19 +165,19 @@ class Hotspot {
     h.ath = ath
     h.atv = atv
     h.hotspot_type = opt.hotspotType
-   
+    h.capture = true
     h.scale = 0.5
     if (opt.iconId) {
       setSytle(this, opt.iconId)
     } else {
       h.url = opt.url
     }
-
+ 
     if (this.element) {
       var layerName = 'layer_' + this.name
       var layer = _this.layer = krpano.addlayer(layerName)
       layer.type = 'container'
-      // layer.keep = true
+      layer.keep = true
       layer.align = 'right'
       layer.edge = 'left'
       $(layer.sprite).append(this.element)
@@ -342,10 +341,9 @@ function setSytle (_this, name) {
   if (typeof name === 'object') {
     name = name.name
   }
-  if (typeof name === 'string' && funs.yp.method.icon.getIcon(name)) {
+  if (typeof name === 'string') {
     _this.hotspot.loadstyle(name)
   } else if (typeof name === 'number') {
-    name = funs.yp.method.icon.getStyle(name)
     _this.hotspot.loadstyle(name.name)
   } else {
     this.yp('未找到style=', name)

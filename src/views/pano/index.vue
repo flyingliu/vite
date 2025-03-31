@@ -8,15 +8,15 @@
 import { onMounted } from 'vue'
 import { H, Hotspots, Heres } from '../../method'
 
-// console.log('Heres', Heres)
+console.log('Heres', Heres)
 
 const init = () => {
   return new Promise((resolve, reject) => {
     embedpano({
-      xml: '/test/animated-hotspots/anihotspots.xml',
+      xml: '/krpano/krpano.xml',
       target: 'pano',
       html5: 'only',
-      onready: function(krpano) {
+      onready: function (krpano) {
         krpano = krpano.get('global')
         window.krpano = krpano
         resolve(krpano)
@@ -25,66 +25,77 @@ const init = () => {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
   // console.log('000', embedpano)
-  setTimeout(() => {
-    init().then((krpano) => {
-      krpano.method = {
-        hotspot: new Hotspots(krpano),
-      }
+  const krpano = await init()
+  console.log('krpano', krpano)
+  // krpano.method = {
+  //   hotspot: new Hotspots(krpano),
+  // }
+  // krpano.my = {
+  //   here: new Heres(krpano),
+  // }
+  // krpano.view.hlookat = 123.4
+  // krpano.view.vlookat = 12.3
+  // krpano.view.fov = 50
 
-      krpano.my = {
-        here: new Heres(krpano),
-      }
-      krpano.view.hlookat = 123.4
-      krpano.view.vlookat = 12.3
-      krpano.view.fov = 120
-      krpano.actions.loadpano(
-        '/test/animated-hotspots/anihotspots.xml',
-        null,
-        'MERGE',
-        'BLEND(0.5)'
-      )
-      var logo = krpano.addlayer()
-      logo.name = 'flyingishere'
-      // logo.url = '/images/love.png'
-      logo.type = 'container'
-      // logo.sprite = '<div>123</div>'
-      logo.align = 'right'
-      logo.edge = 'left'
-      logo.width = 100
-      logo.height = 100
+  const here = new Heres(krpano, {})
+  here.addHere({
+    ath: 20,
+    atv: 20,
+    url: '/images/cat.png',
+    isMove: false,
+    element: '<div>haha</div>',
+  })
+  console.log(here)
 
-      var hs = krpano.addhotspot()
-      hs.name = 'haha'
-      hs.url = '/images/cat.png'
-      hs.keep = true
-      hs.ath = 0
-      hs.atv = 0
-      hs.width = 50
-      hs.height = 50
-      hs.ondown = 'draghotspot();'
+  // 加载pano
+  krpano.actions.loadpano(
+    '/test/animated-hotspots/anihotspots.xml',
+    null,
+    'MERGE',
+    'BLEND(0.5)'
+  )
 
-      hs.layer = logo
+  // textfield_template(krpano)
+  // 加载logo
+  var logo = krpano.addlayer()
+  logo.name = 'logo'
+  logo.url = '/images/cat.png'
+  logo.align = 'lefttop'
+  logo.keep = true
+  logo.scale = 0.2
+  logo.x = 10
+  logo.y = 300
+  logo.onclick = "openurl('http://www.360cities.net', _blank);"
 
-      hs.onclick = function() {
-        krpano.actions.loadscene('scene2')
-        // krpano/krpano.xml /krpano/plugineg/test.xml
-        // krpano.actions.loadpano('/krpano/plugineg/test.xml')
-      }
-      hs.onout = function() {
-        console.log(hs)
-      }
+  // 加载热点
+  var hs = krpano.addhotspot()
+  hs.name = 'haha'
+  hs.url = '/images/cat.png'
+  hs.keep = true
+  hs.ath = 0
+  hs.atv = 0
+  hs.width = 50
+  hs.height = 50
+  hs.ondown = 'draghotspot();'
+  hs.layer = logo
+  hs.onclick = function () {
+    krpano.actions.loadscene('scene2')
+  }
+  hs.onout = function () {
+    console.log(hs)
+  }
 
-      const event = krpano.events.createItem('skin_plugin_vr')
-      event.keep = true
-      event.onnewscene = () => {
-        console.log('newnew!!')
+  // 加载场景
+  const event = krpano.events.createItem('skin_plugin_vr')
+  event.keep = true
+  event.onnewscene = () => {
+    console.log('newnew!!')
+  }
 
-        
-      }
-    })
-  }, 0)
+
+
 })
 </script>
 
