@@ -677,9 +677,9 @@ define('yp', [
       // 缓存
       this._cacheData = []
       this._currScene = this.krpano.xml.scene
-      
+
       var event = yp.method.util.createItem('events', 'skin_plugin_vr')
-      
+
       fn && typeof fn === 'function' && fn(data, yp.data.relevance)
     }.bind(this))
   }

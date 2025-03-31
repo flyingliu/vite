@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <krpano >
-	<!-- 热点默认样式 -->
-	<style name="mapspot" keep="true" url="%$STATIC%images/point.png" parent="layer[map]" align="lefttop" edge="center" />
+  <!-- 热点默认样式 -->
+  <style name="mapspot" keep="true" url="%$STATIC%images/point.png" parent="layer[map]" align="lefttop" edge="center" />
 
-	<!-- 漫游地图    url="%SWFPATH%/testResources/map.png" -->
-	<layer name="map" scalechildren="true" type="container" url="" visible="false" keep="true" align="lefttop" edge="lefttop" capture="false" x="0" y="0" scale="1" onclick=""/>
+  <!-- 漫游地图 url="%SWFPATH%/testResources/map.png" -->
+  <layer name="map" scalechildren="true" type="container" url="" visible="false" keep="true" align="lefttop" edge="lefttop" capture="false" x="0" y="0" scale="1" onclick=""/>
 
-	<!-- 选中的热点 -->
-	<layer name="activespot" url="%$STATIC%images/point_click.png" parent="layer[map]" visible="false" keep="true" align="lefttop" zorder="2" />
+  <!-- 选中的热点 -->
+  <layer name="activespot" url="%$STATIC%images/point_click.png" parent="layer[map]" visible="false" keep="true" align="lefttop" zorder="2" />
 
-	<!-- 扫描样式 -->
-	<layer name="radar" keep="true" width="100" height="100" url.flash="%SWFPATH%/plugins/radar.swf" url.html5="%SWFPATH%/plugins/radar.js" edge="centent" visible="false" align="center" zorder="1" scale="1" fillalpha="0.5" fillcolor="0x7F5F3F" linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"/>
+  <!-- 扫描样式 -->
+  <layer name="radar" keep="true" width="100" height="100" url.flash="%SWFPATH%/plugins/radar.swf" url.html5="%SWFPATH%/plugins/radar.js" edge="centent" visible="false" align="center" zorder="1" scale="1" fillalpha="0.5" fillcolor="0x7F5F3F" linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"/>
 
-	<!-- 扫描样式 -->
-	<layer name="editradar" heading="0" width="80" height="80" keep="true" parent="layer[editactivespot]" url.flash="%SWFPATH%/plugins/radar.swf" url.html5="%SWFPATH%/skin/plugin/radar_edit.js" edge="centent" visible="true" align="center" zorder="1" fillalpha="0.5" fillcolor="0x986532" linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"/>
+  <!-- 扫描样式 -->
+  <layer name="editradar" heading="0" width="80" height="80" keep="true" parent="layer[editactivespot]" url.flash="%SWFPATH%/plugins/radar.swf" url.html5="%SWFPATH%/skin/plugin/radar_edit.js" edge="centent" visible="true" align="center" zorder="1" fillalpha="0.5" fillcolor="0x986532" linewidth="1.0" linecolor="0xE0E0A0" linealpha="0.5"/>
 
-	<!-- 选中的热点 -->
-	<layer name="editactivespot" x="-28" y="-28" type="container" width="80" height="80" bgroundedge="80" bgcolor="0x000000" bgalpha="0.5" visible="false" keep="true" zorder="2" />
+  <!-- 选中的热点 -->
+  <layer name="editactivespot" x="-28" y="-28" type="container" width="80" height="80" bgroundedge="80" bgcolor="0x000000" bgalpha="0.5" visible="false" keep="true" zorder="2" />
 
-	<action name="addradar">
+  <action name="addradar">
 		set(layer[editactivespot].visible, true);
-	</action>
+  </action>
 
 
-	<action name="draglayer">
+  <action name="draglayer">
 		if(%1 != dragging,
 			copy(drag_currentx, x);
 			copy(drag_currenty, y);
@@ -48,11 +48,9 @@
 				delayedcall(0, draglayer(dragging) );
 			  );
 		  );
-	</action>
+  </action>
 
-<!-- 	<events name="skin_map_events" keep="true"
-		onnewscene="skin_maps_load_scene();"
-		onxmlcomplete="set(events[skin_map_events].onxmlcomplete,null);
+  <!-- 	<events name="skin_map_events" keep="true" onnewscene="skin_maps_load_scene();" onxmlcomplete="set(events[skin_map_events].onxmlcomplete,null);
 						ifnot(skin_settings.map_skin,
 							set(skin_settings.maps_style, skin_maps_default_right);
 							set(skin_settings.maps_parent, skin_maps_right);
@@ -61,38 +59,21 @@
 							,
 								skin_maps_onstart();
 							);
-						);"
-		onloadcomplete="set(events[skin_map_events].onloadcomplete,null);"
-		onresize="set(events[skin_map_events].onresize,null);"
-		onmousedown="set(events[skin_map_events].onmousedown, null); skin_maps_closemap();"/> -->
+						);" onloadcomplete="set(events[skin_map_events].onloadcomplete,null);" onresize="set(events[skin_map_events].onresize,null);" onmousedown="set(events[skin_map_events].onmousedown, null); skin_maps_closemap();"/> -->
 
-	<!-- 默认样式 -->
-	<style name="skin_maps_default" visible="false" state="closed" zoom="true" width="268" height="200" bgcolor="0x000000" bgcapture="false" bgalpha="0.5" keep="true" align="lefttop"/>
+  <!-- 默认样式 -->
+  <style name="skin_maps_default" visible="false" state="closed" zoom="true" width="268" height="200" bgcolor="0x000000" bgcapture="false" bgalpha="0.5" keep="true" align="lefttop"/>
 
-	<!-- 放在右侧时默认样式 -->
-	<style name="skin_maps_default_right" state="closed" width="268" height="200" bgroundedge="10" handcursor="false" bgcolor="0x000000" bgcapture="true" bgalpha="0.5" keep="true" align="righttop" edge="lefttop" x="0" y="20" zorder="12"/>
+  <!-- 放在右侧时默认样式 -->
+  <style name="skin_maps_default_right" state="closed" width="268" height="200" bgroundedge="10" handcursor="false" bgcolor="0x000000" bgcapture="true" bgalpha="0.5" keep="true" align="righttop" edge="lefttop" x="0" y="20" zorder="12"/>
 
-	<!-- 默认配置 -->
-	<skin_settings maps="true"
-				   map_skin="false"
-				   maps_parent="maps"
-				   maps_style="skin_maps_default"
-				   maps_open="true"
-				   maps_open_width="500"
-				   maps_open_height="500"
-				   maps_open_x="268"
-				   maps_open_y="20"
-				   maps_open_align="righttop"
-				   maps_open_edge="lefttop"
-				   maps_time="0.5"
-				   maps_right_click="true"
-				   radarresize="0"
-	/>
+  <!-- 默认配置 -->
+  <skin_settings maps="true" map_skin="false" maps_parent="maps" maps_style="skin_maps_default" maps_open="true" maps_open_width="500" maps_open_height="500" maps_open_x="268" maps_open_y="20" maps_open_align="righttop" maps_open_edge="lefttop" maps_time="0.5" maps_right_click="true" radarresize="0" />
 
-	<!--
+  <!--
 		当加载全景时,调用方法
 	 -->
-	<action name="skin_maps_load_scene">
+  <action name="skin_maps_load_scene">
 		set(layer[activespot].visible, false);
 		set(layer[radar].visible, false);
 
@@ -113,19 +94,19 @@
 				set(layer[radar].visible, true);
 			);
 		);
-	</action>
+  </action>
 
 
 
-	<action name="js_add_map">
+  <action name="js_add_map">
 		set(layer[map].visible, true);
 		set(layer[map].url, %1);
 		set(layer[map].ondown, draglayer(););
-	</action>	
+  </action>
 
 
 
-	<action name="js_add_mapspot">
+  <action name="js_add_mapspot">
 
 		addlayer(%1);
 		layer[%1].loadstyle(mapspot);
@@ -138,12 +119,12 @@
 		set(layer[%1].ondown, draglayer(););
 		trace(%1,--,%2,---,%3,----,%4,---is add --------)
 
-	</action>	
+  </action>
 
-	<!--
+  <!--
 		默认开始时调用此方法
 	 -->
-	<action name="skin_maps_onstart">
+  <action name="skin_maps_onstart">
 		if(skin_settings.maps == true AND skin_settings.maps_type == 'map_thumb'
 		,
 			copy(flag, layer[get(skin_settings.maps_parent)]);
@@ -168,12 +149,12 @@
 				set(contextmenu.item[my].visible, true);
 			);
 		);
-	</action>
+  </action>
 
-	<!--
+  <!--
 		切换地图和热点的方法
 	-->
-	<action name="skin_maps_change_map">
+  <action name="skin_maps_change_map">
 		trace(是否缩小雷达坐标,noradarresize);
 		if(skin_settings.maps_name != %1,
 
@@ -189,16 +170,16 @@
 			);
 			skin_maps_load_scene();
 		);
-	</action>
+  </action>
 
-	<action name="getradar">
+  <action name="getradar">
 		set(radar,get(skin_settings.maps_name));
-	</action>
+  </action>
 
-	<!--
+  <!--
 		添加热点
 	 -->
-	<action name="skin_maps_addmapspots">
+  <action name="skin_maps_addmapspots">
 		if(xml.scene,
 			copy(currentscene,xml.scene);
 		,
@@ -260,16 +241,16 @@
 
 		copy(lastradarcount,radarcount);
 		trace(最后,currentscene);
-	</action>
+  </action>
 
-	<action name="mobilescale" autorun="preinit" devices="mobile">
+  <action name="mobilescale" autorun="preinit" devices="mobile">
 		mul(stagescale,2);
-	</action>
-	<!--
+  </action>
+  <!--
 		自动计算,并自适应外层
 	 -->
-	<action name="skin_maps_onresize">
-		<!-- flash bug 当使用 changeorigin时,必须设置x,y轴-->
+  <action name="skin_maps_onresize">
+    <!-- flash bug 当使用 changeorigin时,必须设置x,y轴-->
 
 		layer[map].changeorigin(center, center);
 		set(layer[map].x, 0);
@@ -312,29 +293,27 @@
 		);
 		
 		
-	</action>	
-	
-	<!-- 切换打开与关闭地图 -->
-	<action name="skin_maps_swithmap">
+  </action>
+
+  <!-- 切换打开与关闭地图 -->
+  <action name="skin_maps_swithmap">
 		trace(layer[get(skin_settings.maps_parent)].maps_state);
 		if(layer[get(skin_settings.maps_parent)].maps_state == "opend",
 			skin_maps_closemap();
 		,
 			skin_maps_openmap();
 		)
-	</action>
-	
-	<!-- 
-		打开全景,当skin_settings.map_skin==true时,为false
-	 -->
-	<action name="skin_maps_openmap">
-		trace(layer[get(skin_settings.maps_parent)].maps_state,"---------------state");
-	</action>
+  </action>
 
-	<!-- 
-		关闭全景,当skin_settings.map_skin==true时,为false
+  <!-- 打开全景,当skin_settings.map_skin==true时,为false
 	 -->
-	<action name="skin_maps_closemap">
+  <action name="skin_maps_openmap">
 		trace(layer[get(skin_settings.maps_parent)].maps_state,"---------------state");
-	</action>
+  </action>
+
+  <!-- 关闭全景,当skin_settings.map_skin==true时,为false
+	 -->
+  <action name="skin_maps_closemap">
+		trace(layer[get(skin_settings.maps_parent)].maps_state,"---------------state");
+  </action>
 </krpano>
