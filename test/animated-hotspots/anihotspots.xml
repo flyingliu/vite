@@ -10,6 +10,9 @@
   <scene name="scene1" onstart="" autoload="true" >
     <!-- pano -->
     <preview url="preview.jpg" />
+    <image>
+      <sphere url="/pano/g.jpg" />
+    </image>
 
     <!-- view settings -->
     <view hlookat="0" vlookat="0" fovtype="MFOV" fov="90" fovmin="20" fovmax="120" />
@@ -27,7 +30,7 @@
     -->
 
     	<!-- textfield with information about the currently dragged hotspot -->
-	<plugin name="hotspot_pos_info"
+	<!-- <plugin name="hotspot_pos_info"
 	        type="text"
 	        html="drag the hotspots..."
 	        css="font-family:Courier;"
@@ -35,7 +38,7 @@
 	        align="lefttop" x="10" y="10"
 	        width="200"
 	        enabled="false"
-	        />
+	        /> -->
 
     <action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
       <!-- define local variables -->
@@ -64,7 +67,7 @@
       );
     </action>
 
-    <action name="draghotspot">
+    <!-- <action name="draghotspot">
         spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery, calc(mouse.stagex LT stagewidth/2 ? 'l' : 'r'));
         sub(drag_adjustx, mouse.stagex, hotspotcenterx);
         sub(drag_adjusty, mouse.stagey, hotspotcentery);
@@ -74,15 +77,15 @@
           screentosphere(dx, dy, ath, atv);
           print_hotspot_pos();
           );
-      </action>  
+      </action>   -->
 
-      	<action name="print_hotspot_pos"><![CDATA[
+      	<!-- <action name="print_hotspot_pos"><![CDATA[
           copy(print_ath, ath);
           copy(print_atv, atv);
           roundval(print_ath, 3);
           roundval(print_atv, 3);
           calc(plugin[hotspot_pos_info].html, '&lt;hotspot name="' + name + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ath="' + print_ath + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atv="' + print_atv + '"[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...[br]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&gt;');
-        ]]></action>
+        ]]></action> -->
 
 
     <!-- example hotspots -->
@@ -96,5 +99,6 @@
   </scene>
   <scene name="scene2" onstart="" autoload="false" >
     <preview type="grid(CUBE,16,16,512,0xCCCCCC,0xFFFFFF,0x999999);" />
+    <!-- <preview url="/pano/2.jpeg" /> -->
   </scene>
 </krpano>
