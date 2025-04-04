@@ -1,0 +1,8 @@
+<krpano>
+
+<image>
+  <sphere url="/pano/2.jpeg" />
+</image>
+  <view hlookat="0" vlookat="-5" fov="100" distortion="0" />
+
+</krpano>

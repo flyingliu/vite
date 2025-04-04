@@ -1,0 +1,9 @@
+<krpano>
+
+  <image>
+    <cubestrip url="/pano/2.jepg" />
+  </image>
+
+  <view hlookat="0" vlookat="-5" fov="100" distortion="0" />
+
+</krpano>
