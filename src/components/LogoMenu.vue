@@ -16,7 +16,7 @@ const showMenu = ref(false)
 
 <template>
   <main class="logomenu">
-    <h1 @click="showMenu = !showMenu">{{ title }}</h1>
+    <h1 @click="showMenu = !showMenu" onclick="alert('2332')">{{ title }}</h1>
     <dl v-if="showMenu">
       <dd v-for="item in menu" :key="item.name">{{ item.name }}</dd>
     </dl>
@@ -26,16 +26,19 @@ const showMenu = ref(false)
 <style lang="scss" scoped>
 .logomenu {
   text-align: left;
-  background: rgba(2, 2, 2, 0.4);
   font-size: 14px;
   width: 180px;
   h1 {
     color: #fff;
     font: 30px/1.5 'Microsoft YaHei';
     padding: 10px 20px;
+    background: rgba(2, 2, 2, 0.4);
+    margin-bottom: 2px;
+    cursor: pointer;
   }
   dl {
     padding: 0 0 20px 0;
+    background: rgba(2, 2, 2, 0.4);
     dd {
       padding: 0px 20px;
       font: 20px/2 'Microsoft YaHei';

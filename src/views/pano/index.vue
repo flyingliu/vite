@@ -18,6 +18,11 @@ const init = () => {
       xml: '/krpano/krpano.xml',
       target: 'pano',
       html5: 'only',
+      passQueryParameters: true,
+      onerror: function (err) {
+        console.log('embedpano error', err)
+        reject(err)
+      },
       onready: function (krpano) {
         krpano = krpano.get('global')
         window.krpano = krpano
@@ -47,7 +52,7 @@ onMounted(async () => {
     atv: 20,
     url: '/images/cat.png',
     isMove: true,
-    element: '<div>haha</div>',
+    element: '<div onClick="alert(12232)">haha</div>',
     callback: {
       onClick: () => {
         console.log('onClick')
@@ -84,8 +89,6 @@ onMounted(async () => {
     'MERGE',
     'BLEND(0.5)'
   )
-
-  // textfield_template(krpano)
   // 加载logo
   let logo = addLayer(krpano, {
     name: 'logo',
@@ -114,7 +117,7 @@ onMounted(async () => {
   hs.width = 50
   hs.height = 50
   hs.ondown = 'draghotspot();'
-  hs.layer = logo
+
   hs.onclick = function () {
     // 加载loadxmlstring
     function loadxmlstring() {

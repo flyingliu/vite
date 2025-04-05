@@ -3,3 +3,11 @@ node_modules
 dist
 dist-ssr
 *.local
+.history
+.env.*
+.env
+.npmrc
+.lock
+yarn.lock
+.pnp.*
+.vscode

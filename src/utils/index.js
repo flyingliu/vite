@@ -8,9 +8,12 @@ function addLayer (krpano, option = {}) {
     scale: 1,
     x: 20,
     y: 20,
-    // onclick: "openurl('/', _blank);"
+    capture: false,
+    bgcapture: false,
+
+    onclick: "openurl('/', _blank);"
   }
-  option = { ...defaultOption, ...option}
+  option = { ...defaultOption, ...option }
   Object.keys(option).forEach(key => {
     layer[key] = option[key]
   })

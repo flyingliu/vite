@@ -1,15 +1,15 @@
 <krpano>
     <!-- switch_starview="true" -->
-    <skin_settings showlog='false'
+    <skin_settings showlog='true'
                    logger_level="debug"
                    switch_gyro="false"
                    switch_music="true"
                    switch_hotspot="true"
                    switch_comment="true"
-                   switch_autorotate="true"
+                   switch_autorotate="false"
     />
     
-    <autorotate name="spin" enabled="false" waittime="3" accel="1.0" speed="5.0" horizon="0.0" tofov="90" />
+    <!-- <autorotate name="spin" enabled="false" waittime="3" accel="1.0" speed="5.0" horizon="0.0" tofov="90" /> -->
 
     <layer name="skin_loadingtext" keep="true" url="%SWFPATH%/plugins/textfield.swf" align="center" x="5" y="-5"
            html="Loading..." visible="false" autoheight="true" background="false" border="false" enabled="false"
