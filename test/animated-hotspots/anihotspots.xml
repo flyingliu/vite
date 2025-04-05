@@ -5,6 +5,12 @@
 -->
 
 <krpano>
+<control 
+mousetype="moveto" 
+touchtype="drag2d"
+zoomtocursor="false"
+zoomoutcursor="true" />
+
 
   <include url="%SWFPATH%/krpano/skin/base_include_xml.xml"/>
   <scene name="scene1" onstart="" autoload="true" >
@@ -30,7 +36,7 @@
     -->
 
     	<!-- textfield with information about the currently dragged hotspot -->
-	<!-- <plugin name="hotspot_pos_info"
+	<plugin name="hotspot_pos_info"
 	        type="text"
 	        html="drag the hotspots..."
 	        css="font-family:Courier;"
@@ -38,7 +44,8 @@
 	        align="lefttop" x="10" y="10"
 	        width="200"
 	        enabled="false"
-	        /> -->
+          visible="false"
+	        />
 
     <action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
       <!-- define local variables -->
@@ -67,7 +74,7 @@
       );
     </action>
 
-    <!-- <action name="draghotspot">
+    <action name="draghotspot">
         spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery, calc(mouse.stagex LT stagewidth/2 ? 'l' : 'r'));
         sub(drag_adjustx, mouse.stagex, hotspotcenterx);
         sub(drag_adjusty, mouse.stagey, hotspotcentery);
@@ -77,7 +84,7 @@
           screentosphere(dx, dy, ath, atv);
           print_hotspot_pos();
           );
-      </action>   -->
+      </action>  
 
       	<!-- <action name="print_hotspot_pos"><![CDATA[
           copy(print_ath, ath);
