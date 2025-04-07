@@ -1,4 +1,4 @@
-import{r as s,a as o,o as a,c as r,e as i,w as d,b as n,d as c}from"./index.4825996d.js";class h extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"})}connectedCallback(){this.shadow.innerHTML=`
+import{r as s,a as o,o as a,c as r,e as i,w as d,b as n,d as c}from"./index.2e3fe3d3.js";class h extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"})}connectedCallback(){this.shadow.innerHTML=`
       <form>
         <input name="text" type="text" placeholder="What needs to be done?" />
       </form>
