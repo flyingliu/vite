@@ -1,6 +1,7 @@
 import { createApp, h, resolveComponent } from 'vue'
 import HereSpot from '../components/HelloWorld.vue'
 import { Hotspots } from './hotspot.js'
+import { setupMobileClick } from '/@/utils/index.js'
 var hotspotArr = []
 var IMG = '/images/love.png'
 var TEMPLATE = '<div class="herewrap">bababa</div>'
@@ -22,12 +23,13 @@ const DEFAULT_OPTION = {
       hotspotArr.push(this)
       console.log('this onLoaded', this)
       // 加载完成后挂在vue组件
-      // var element = this.element[0]
-      // createApp({
-      //   render: () => h(HereSpot, {
-      //     msg: 'hello world',
-      //   })
-      // }).mount(element)
+      var element = this.element[0]
+      createApp({
+        render: () => h(HereSpot, {
+          msg: 'hello world',
+        })
+      }).mount(element)
+      setupMobileClick(element)
     },
     onAddHotspot: function () {
       currentHotspot = this

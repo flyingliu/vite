@@ -9,7 +9,7 @@ import { onMounted, createApp, h } from 'vue'
 import { H, Hotspots, Heres } from '../../method'
 import LogoMenu from '../../components/LogoMenu.vue'
 
-import {addLayer} from '../../utils/index.js'
+import { addLayer,loadxmlstring } from '../../utils/index.js'
 console.log('Heres', addLayer)
 
 const init = () => {
@@ -52,7 +52,7 @@ onMounted(async () => {
     atv: 20,
     url: '/images/cat.png',
     isMove: true,
-    element: '<div onClick="alert(12232)">haha</div>',
+    element: '<div>haha</div>',
     callback: {
       onClick: () => {
         console.log('onClick')
@@ -94,16 +94,16 @@ onMounted(async () => {
     name: 'logo',
     url: '/pano/t.png',
     scale: 1,
-    onclick: "",
+    onclick: '',
   })
 
   createApp({
     render: () =>
       h(LogoMenu, {
         menu: [
-          { name: '海天一色', url: '/111' },
-          { name: '海底揽胜', url: '/222' },
-          { name: '闲庭信步', url: '/333' },
+          { name: '海天一色', key: 'haitian', url: '/pano/g-cmpr.jpg' },
+          { name: '海底揽胜', key: 'haidi', url: '/pano/2-cmpr.jpeg' },
+          { name: '闲庭信步', key: 'xianting', url: '/pano/e-cmpr.jpg' },
         ],
       }),
   }).mount(logo.sprite)
@@ -120,23 +120,8 @@ onMounted(async () => {
 
   hs.onclick = function () {
     // 加载loadxmlstring
-    function loadxmlstring() {
-      if (krpano) {
-        let xmlstring = `<krpano>
-          <scene name="scene3" onstart="" autoload="false" >
-            <preview type="grid(sphere,16,16,512,0x666666,0x333333,0x999999);" />
-            <image><sphere url="/pano/3.jpeg" /></image>
-            <view hlookat="0" vlookat="0" fov="100" distortion="0.0" />
-          </scene>
-        </krpano>`
-        krpano.call(
-          'loadxml(' + escape(xmlstring) + ', null, MERGE, BLEND(0.5));'
-        )
-      }
-    }
-    loadxmlstring()
-
-    krpano.actions.loadscene('scene3')
+    const name = loadxmlstring(krpano)
+    krpano.actions.loadscene(name)
   }
   hs.onout = function () {
     // console.log(hs)
@@ -150,6 +135,16 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style>
+
+
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 10px;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 #pano {

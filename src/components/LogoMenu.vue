@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { setupMobileClick, loadxmlstring } from '/@/utils/index.js'
 
 defineProps({
   title: {
@@ -12,13 +13,25 @@ defineProps({
   },
 })
 const showMenu = ref(false)
+
+const logomenu = ref(null)
+
+const loadScene = (item) => {
+  console.log('item', item, loadxmlstring)
+  const name = loadxmlstring(window.krpano, item)
+  krpano.actions.loadscene(name)
+}
+
+onMounted(() => {
+  setupMobileClick(logomenu.value)
+})
 </script>
 
 <template>
-  <main class="logomenu">
-    <h1 @click="showMenu = !showMenu" onclick="alert('2332')">{{ title }}</h1>
+  <main class="logomenu" ref="logomenu">
+    <h1 @click="showMenu = !showMenu">{{ title }}</h1>
     <dl v-if="showMenu">
-      <dd v-for="item in menu" :key="item.name">{{ item.name }}</dd>
+      <dd v-for="item in menu" :key="item.name" @click="loadScene(item)">{{ item.name }}</dd>
     </dl>
   </main>
 </template>
@@ -26,22 +39,22 @@ const showMenu = ref(false)
 <style lang="scss" scoped>
 .logomenu {
   text-align: left;
-  font-size: 14px;
-  width: 180px;
+  font-size: .875rem;
+  width: 11.25rem;
   h1 {
     color: #fff;
-    font: 30px/1.5 'Microsoft YaHei';
-    padding: 10px 20px;
+    font: 1.875rem/1.5 'Microsoft YaHei';
+    padding: .625rem 1.25rem;
     background: rgba(2, 2, 2, 0.4);
-    margin-bottom: 2px;
+    margin-bottom: .125rem;
     cursor: pointer;
   }
   dl {
-    padding: 0 0 20px 0;
+    padding: 0 0 1.25rem 0;
     background: rgba(2, 2, 2, 0.4);
     dd {
-      padding: 0px 20px;
-      font: 20px/2 'Microsoft YaHei';
+      padding: 0rem 1.25rem;
+      font: 1.25rem/2 'Microsoft YaHei';
       color: #fff;
       &:hover {
         background: #000;

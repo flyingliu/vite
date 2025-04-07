@@ -4,7 +4,7 @@
 	- animation by xml script
 -->
 
-<krpano>
+<krpano mobile.control.allowfullscreen="true" touch.control="true">
 <control 
 mousetype="moveto" 
 touchtype="drag2d"
