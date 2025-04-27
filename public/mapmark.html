@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>地图标记编辑器</title>
+    <script src="https://map.qq.com/api/gljs?v=1.0&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #container { width: 100%; height: 100vh; }
+        .toolbar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div class="toolbar">
+        <button id="clear">清除所有标记</button>
+        <button id="getData">获取标记数据</button>
+        <button id="createPolygon" disabled>生成多边形</button>
+    </div>
+
+    <script>
+        let map, markers = [], polygon = null;
+        
+        function initMap() {
+            // 初始化地图
+            map = new TMap.Map("container", {
+                center: new TMap.LatLng(39.984104, 116.307503),
+                zoom: 12
+            });
+            
+            // 初始化标记图层
+            const markerLayer = new TMap.MultiMarker({
+                id: 'marker-layer',
+                map: map,
+                styles: {
+                    'default': new TMap.MarkerStyle({
+                        width: 20,
+                        height: 30,
+                        anchor: { x: 10, y: 30 },
+                        src: '/images/marker.png'
+                    })
+                },
+                geometries: []
+            });
+
+            // 初始化多边形图层
+            const polygonLayer = new TMap.MultiPolygon({
+                id: 'polygon-layer',
+                map: map,
+                geometries: []
+            });
+
+            // 点击地图添加标记
+            map.on('click', (e) => {
+                const id = 'marker-' + Date.now();
+                const position = new TMap.LatLng(e.latLng.lat, e.latLng.lng);
+                
+                markers.push({
+                    id: id,
+                    position: position,
+                    styleId: 'default'
+                });
+                
+                updateMarkers();
+                updatePolygonButton();
+            });
+
+            // 双击标记删除
+            map.on('dblclick', (e) => {
+                if (e.target && e.target.geometry) {
+                    const markerId = e.target.geometry.id;
+                    markers = markers.filter(m => m.id !== markerId);
+                    updateMarkers();
+                    updatePolygonButton();
+                    
+                    // 如果删除的是多边形顶点，也清除多边形
+                    if (polygon) {
+                        polygonLayer.setGeometries([]);
+                        polygon = null;
+                    }
+                }
+            });
+
+            // 清除所有标记
+            document.getElementById('clear').addEventListener('click', () => {
+                markers = [];
+                updateMarkers();
+                polygonLayer.setGeometries([]);
+                polygon = null;
+                updatePolygonButton();
+            });
+
+            // 获取标记数据
+            document.getElementById('getData').addEventListener('click', () => {
+                if (markers.length === 0) {
+                    alert('请先添加标记');
+                    return;
+                }
+                
+                const data = markers.map(marker => ({
+                    id: marker.id,
+                    lat: marker.position.lat,
+                    lng: marker.position.lng
+                }));
+                
+                alert('标记数据:\n' + JSON.stringify(data, null, 2));
+                console.log('标记数据:', data);
+            });
+
+            // 生成多边形
+            document.getElementById('createPolygon').addEventListener('click', () => {
+                if (markers.length < 3) {
+                    alert('至少需要3个标记才能生成多边形');
+                    return;
+                }
+                
+                const paths = markers.map(m => m.position);
+                polygon = {
+                    id: 'polygon-' + Date.now(),
+                    styleId: 'polygon',
+                    paths: [paths] // 二维数组
+                };
+                
+                polygonLayer.setGeometries([polygon]);
+            });
+
+            function updateMarkers() {
+                markerLayer.setGeometries(markers);
+            }
+
+            function updatePolygonButton() {
+                document.getElementById('createPolygon').disabled = markers.length < 3;
+            }
+        }
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>

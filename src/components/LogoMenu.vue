@@ -37,6 +37,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+// option + z 可以统一更改 rem - px, px - rem 转换
 .logomenu {
   text-align: left;
   font-size: .875rem;
